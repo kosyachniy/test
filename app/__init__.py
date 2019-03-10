@@ -17,11 +17,16 @@ script = '''
 <script src='/static/socket.io.min.js'></script>
 <script>
 namespace = 'main';
-var socket = io.connect(URL + namespace);
+var socket = io.connect("''' + URL + '''" + namespace);
+
+socket.on('answer', function(mes) {
+    console.log(mes);
+});
 
 window.setInterval(function() {
     socket.emit('online', {id: 'Hi!'});
-}, 100);
+    console.log('!');
+}, 500);
 </script>
 '''
 
@@ -41,6 +46,7 @@ def sys():
 @socketio.on('online', namespace='/main')
 def sockio(mes):
     print(mes)
+    socketio.emit('answer', {'id': 'Hoba'}, namespace='/main')
 
 if __name__ == '__main__':
 	socketio.run(app, debug=True)
