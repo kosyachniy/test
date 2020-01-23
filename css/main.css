@@ -22,6 +22,11 @@ div{
 	box-sizing: border-box; /*позволяет не увеличивать в размерах div при padding и margin*/
 
 }
+
+.spectr {
+	display: inline-block;
+}
+
 header{
 	background: url(../img/backg1.jpg) no-repeat center top / cover; /*всегда писать так*/
 	height: 700px;
