@@ -1,0 +1,226 @@
+@font-face{
+	font-family: "MSSerif";
+	src: url(/fonts/Microsoft_Sans_Serif.ttf);
+}
+body{
+	padding: 0; /*отступы*/
+	margin: 0;
+	font-family: MSSerif, Arial sans-serif;
+}
+.clearfix{        /*не дает блоку снизу всасаться вверх*/
+	content: '';
+	display: table;
+	width: 100%;
+	clear: both;
+}
+div{
+	box-sizing: border-box; /*позволяет не увеличивать в размерах div при padding и margin*/
+
+}
+header{
+	background: url(../img/backg1.jpg) no-repeat center top / cover; /*всегда писать так*/
+	height: 700px;
+}
+.container{
+	width: 1140px;
+	margin: 0 auto; /*сделает контейнер ровно по центру*/
+}
+.logo{
+	margin-top: 10px;
+	float: left; /*лого влево*/
+}
+nav{
+	margin-top: 10px;
+	float: right; /*пункты вправо*/
+}
+.menu{
+	padding: 0;
+	margin: 0;
+	display: block;
+	padding-right: 220px;
+}
+.info{
+	padding: 0;
+	margin: 0;
+	display: block;
+	float: right;
+	text-align: center;
+	color: white;
+	text-transform: uppercase;
+	list-style-type: none;
+	font-size: 12px;
+	margin-top: 10px;
+}
+.menu li{
+	float: left;
+	display: block;
+	margin-left: 0;
+	margin-right: 70px;
+	margin-top: 20px;
+}
+.menu li a {
+	color: white;
+	text-decoration: none; /*убираем подчеркивание ссылок*/
+	font-size: 16px;
+	transition: all 0.3s ease;
+}
+.menu li a:hover{
+	color: rgb(17, 226, 28);
+}
+
+.button{
+	background: url(../img/button.png) no-repeat center top / cover;
+	width: 270px;
+	height: 70px;
+	display: block;
+	color: white;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: bold;
+	padding-top: 30px;
+	padding-left: 55px;
+	margin-top: 100px;
+	margin-left: -5px;
+	transition: all 0.3s ease;
+}
+.button:hover {
+	-webkit-transition: all 0.3s ease;;
+	-moz-transition: all 0.3s ease;;
+	-o-transition: all 0.3s ease;;
+	transition: all 0.3s ease;
+	-webkit-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	transform: scale(1.2);
+	color: #636363;
+  }
+.title h2{
+	color: #009846;
+	font-size: 50px;
+	text-align: center;
+	letter-spacing: 4px;
+	margin: 0;
+	padding: 0;
+}
+.gr1{
+	margin-left: 265px;
+	width: 600px;
+}
+.gr2{
+	margin-left: 445px;
+	width: 552px;
+}
+.title2 p{
+	width: 500px;
+	transform: scale(1,1.4);
+	letter-spacing: 2px;
+	text-align: justify;
+	margin-left: 0;
+	float: left;
+	margin-top: 34px;
+	text-indent: 50px;
+}
+.vima{
+	width: 450px;
+	margin-top: 100px;
+}
+.title2{
+	margin-bottom: 370px;
+}
+.pictures{
+	height: 223px;
+	background: url(../img/bck2.jpg);
+	margin-bottom: 110px;
+}
+.pic{
+	display: block;
+	float: left;
+	margin-right: 16px;
+	transition: all 0.3s ease;
+}
+.pic:hover{
+	-webkit-transition: all 0.3s ease;;
+	-moz-transition: all 0.3s ease;;
+	-o-transition: all 0.3s ease;;
+	transition: all 0.3s ease;
+	-webkit-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);
+}
+.greytext{
+	color: #636363;
+	width: 500px;
+	transform: scale(1,1.4);
+	letter-spacing: 2px;
+	margin: 0;
+	text-align: center;
+	margin-left: 475px;
+	margin-top: 50px ;
+}
+.pic2{
+	float: left;
+	display: block;
+	margin-top: 80px;
+	margin-right: 30px;
+}
+.pic3{
+	float: left;
+	display: block;
+	margin-top: 70px;
+	margin-right: 30px;
+}
+.lgr2{
+	background: url(../img/linegr2.png) no-repeat center;
+	height: 40px;
+	margin-top: 300px;
+}
+.lgr3{
+	background: url(../img/linegr2.png) no-repeat center;
+	height: 40px;
+	margin-top: 300px;
+}
+.lgr2 li{
+	list-style-type: none;
+	float: left;
+	display: block;
+	margin-right: 200px;
+	color: white;
+	font-size: 22px;
+	margin-top: 8px;
+}
+.lgr3 li{
+	list-style-type: none;
+	float: left;
+	display: block;
+	margin-right: 140px;
+	color: white;
+	font-size: 22px;
+	margin-top: 8px;
+}
+.bck3{
+	margin-top: 130px;
+	background: url(../img/bck3.jpg) no-repeat center top / cover;
+	width: initial;
+	height: 700px;
+}
+.bck3 h2{
+
+		color: #009846;
+		font-size: 50px;
+		text-align: center;
+		letter-spacing: 4px;
+		margin: 0;
+		padding: 0;
+		padding-top: 100px;
+
+}
+.bck3 p{
+	color: #636363;
+	width: 500px;
+	text-align:  center;
+	margin-left: 470px;
+	transform: scale(1,1.4);
+	margin-top: 30px;
+}
+.button2{
+
+}
