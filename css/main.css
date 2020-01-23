@@ -2,6 +2,11 @@
 	font-family: "MSSerif";
 	src: url(/fonts/Microsoft_Sans_Serif.ttf);
 }
+
+html, body {
+	min-width: 600px;
+}
+
 body{
 	padding: 0; /*отступы*/
 	margin: 0;
@@ -22,7 +27,7 @@ header{
 	height: 700px;
 }
 .container{
-	width: 1140px;
+	width: 100%;
 	margin: 0 auto; /*сделает контейнер ровно по центру*/
 }
 .logo{
@@ -102,11 +107,11 @@ nav{
 	padding: 0;
 }
 .gr1{
-	margin-left: 265px;
+	margin-left: calc(100% - 600px);
 	width: 600px;
 }
 .gr2{
-	margin-left: 445px;
+	margin-left: calc(100% - 552px);
 	width: 552px;
 }
 .title2 p{
@@ -153,7 +158,7 @@ nav{
 	letter-spacing: 2px;
 	margin: 0;
 	text-align: center;
-	margin-left: 475px;
+	margin-left: calc(100% - 500px);
 	margin-top: 50px ;
 }
 .pic2{
@@ -217,7 +222,7 @@ nav{
 	color: #636363;
 	width: 500px;
 	text-align:  center;
-	margin-left: 470px;
+	margin-left: calc(100% - 500px);
 	transform: scale(1,1.4);
 	margin-top: 30px;
 }
