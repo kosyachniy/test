@@ -7,6 +7,7 @@
 language: node_js
 node_js: node
 cache: npm
+install:
+  - cd web
 script:
-  # - cd web
   - npm test
