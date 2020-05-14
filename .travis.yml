@@ -1,9 +1,12 @@
+# language: node_js
+# node_js:
+#   - "stable"
+# cache:
+#   directories:
+#     - node_modules
 language: node_js
-node_js:
-  - "stable"
-cache:
-  directories:
-    - node_modules
+node_js: node
+cache: npm
 script:
-  - cd web
+  # - cd web
   - npm test
