@@ -1,14 +1,9 @@
-language: python
-
-python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
-  - "3.8"
-
-install:
-  - cd api
-  - pip install -r requirements.txt
-
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+    - node_modules
 script:
-  - gunicorn app:app -k eventlet -w 1 -b :5000 --reload
+  - cd web
+  - npm test
