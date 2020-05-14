@@ -20,6 +20,8 @@ try:
 	params['authMechanism'] = 'SCRAM-SHA-1'
 
 except:
-	pass
+	MONGO = {
+		'db': 'uple',
+	}
 
 db = MongoClient(**params)[MONGO['db']]
