@@ -18,10 +18,14 @@ from api._func import check_params, load_image, get_date, next_id, \
 					  online_emit_del
 
 
-with open('keys.json', 'r') as file:
-	keys = json.loads(file.read())
-	VK = keys['vk']
-	GOOGLE = keys['google']
+try:
+	with open('keys.json', 'r') as file:
+		keys = json.loads(file.read())
+		VK = keys['vk']
+		GOOGLE = keys['google']
+except:
+	VK = ''
+	GOOGLE = ''
 
 
 # # Token generation

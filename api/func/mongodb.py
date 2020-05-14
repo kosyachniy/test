@@ -5,8 +5,14 @@ from pymongo import MongoClient
 from sets import HOST
 
 
-with open('keys.json', 'r') as file:
-	MONGO = json.loads(file.read())['mongo']
+try:
+	with open('keys.json', 'r') as file:
+		MONGO = json.loads(file.read())['mongo']
+except:
+	MONGO = {
+		'login': None,
+		'password': None,
+	}
 
 db = MongoClient(
 	host=HOST,

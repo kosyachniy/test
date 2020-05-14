@@ -12,8 +12,14 @@ except ImportError:
 	from urllib.parse import quote
 
 import json
-with open('keys.json', 'r') as file:
-	s = json.loads(file.read())['smsc']
+try:
+	with open('keys.json', 'r') as file:
+		s = json.loads(file.read())['smsc']
+except:
+	s = {
+		'login': '',
+		'password': '',
+	}
 
 # Константы для настройки библиотеки
 SMSC_LOGIN = s['login']			# логин клиента
