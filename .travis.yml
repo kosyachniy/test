@@ -6,8 +6,9 @@
 #     - node_modules
 language: node_js
 node_js: node
-cache: npm
-install:
-  - cd web
-script:
-  - npm test
+# cache: npm
+# install:
+#   - cd web
+# script:
+#   - npm test
+script: cd web && npm install && npm test
