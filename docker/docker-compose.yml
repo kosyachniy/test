@@ -15,7 +15,7 @@ services:
             - ../data/logs:/data/logs
         #     - "../mongod.conf:/etc/mongod.conf"
         # command: --config /etc/mongod.conf
-        command: --logpath /data/logs/mongodb.log
+        # command: --logpath /data/logs/mongodb.log
 
     api:
         build:

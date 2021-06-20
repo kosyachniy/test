@@ -14,7 +14,10 @@ from PIL import Image, ExifTags
 
 
 with open('sets.json', 'r') as file:
-    sets = json.loads(file.read())
+    cont=file.read()
+    print('!!!!!!!!!>>>>>>>>!!!!!!')
+    print(cont)
+    sets = json.loads(cont)
     SIDE_OPTIMIZED = sets['side_optimized']
 
 
