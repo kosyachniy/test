@@ -19,7 +19,7 @@ TYPES = ['INFO', 'WARNING', 'ERROR', 'CRITICAL', 'IMPORTANT']
 def report(text, type_=0, additional=''):
     """ Report logs and notifications on Telegram chat or in log files """
 
-    if MODE != "PROD" and type_ == 0:
+    if MODE not in ('TEST', 'PROD') and type_ == 0:
         return
 
     preview = f"{SYMBOLS[type_]} {MODE} {TYPES[type_]}\n---------------\n"
