@@ -16,10 +16,8 @@ before_script:
   - cd docker
   - docker-compose -p web up --build
 
-# script:
-#   - docker-compose exec users python manage.py test
-#   - docker-compose exec users black project
-#   - docker-compose exec users flake8 project
+script:
+  - docker-compose exec web_api_1 python test.py
 
 after_script:
   - docker-compose down
