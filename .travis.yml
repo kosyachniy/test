@@ -18,7 +18,7 @@ before_script:
   - docker-compose exec web_api_1 pylint api/
 
 script:
-  - docker-compose exec web_api_1 pylint api/
+  - docker-compose exec web_api_1 pylint app.py
   - docker-compose exec web_api_1 python test.py
 
 after_script:
