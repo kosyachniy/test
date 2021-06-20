@@ -1,75 +1,73 @@
+"""
+The API
+"""
+
+# Libraries
+## System
 import time
 
-from func.mongodb import db
-from api._func import get_language
-import api._error as Error
-
-import api.account as account
-import api.users as users
-import api.feedback as feedback
-import api.search as search
-import api.posts as posts
+## Local
+from .funcs import get_network, get_language, get_user_by_token
+from .methods import call
+from .background import background
+from .errors import ErrorWrong
 
 
+# pylint: disable=R0902,R0903,W0201
 class API():
-	def __init__(self, server, client, ip, socketio=None, token=None, language=0, ip_remote=None):
-		self.timestamp = time.time()
-		self.server = server
-		self.client = client
-		self.socketio = socketio
-		self.ip = ip
-		self.token = token
-		self.language = get_language(language)
+    """ API """
 
-		# User recognition
+    def __init__(self, client, sio=None):
+        self.client = client
+        self.sio = sio
 
-		self.user = {
-			'id': 0,
-			'admin': 2,
-		}
+        # Background processes
+        background(self.sio)
 
-		if token:
-			db_filter = {'id': True, '_id': False}
-			user_id = db['tokens'].find_one({'token': token}, db_filter)
+    # pylint: disable=C0103,R0913
+    async def method(
+        self,
+        name,
+        params=None,
+        ip=None,
+        sid=None,
+        token=None,
+        network=0,
+        language=0,
+    ):
+        """ Call API method """
 
-			if user_id and user_id['id']:
-				user = db['users'].find_one({'id': user_id['id']})
+        if not params:
+            params = {}
 
-				if user:
-					self.user = user
+        # print(name, params)
 
-		# IP (case when a web application makes requests from IP with the same address)
+        self.timestamp = time.time()
+        self.ip = ip
+        self.sid = sid
+        self.token = token
+        self.network = get_network(network)
+        self.language = get_language(language)
+        self.user = get_user_by_token(token)
 
-		if ip_remote and ip == self.client['ip']:
-			self.ip = ip_remote
+        # Remove extra indentation
 
-	def method(self, name, params={}):
-		# Remove extra indentation
+        for i in params:
+            if isinstance(params[i], str):
+                params[i] = params[i].strip()
 
-		for i in params:
-			if type(params[i]) == str:
-				params[i] = params[i].strip()
+        # # Action tracking
 
-		# Action tracking
+        # req = {
+        #     'time': self.timestamp,
+        #     'user': self.user['id'],
+        #     'ip': self.ip,
+        #     'method': name,
+        #     'params': params,
+        # }
 
-		req = {
-			'time': self.timestamp,
-			'user': self.user['id'],
-			'ip': self.ip,
-			'method': name,
-			'params': params,
-		}
+        # db['actions'].insert_one(req)
 
-		db['actions'].insert_one(req)
+        # API method
 
-		# API method
-
-		try:
-			module, method = name.split('.')
-			func = getattr(globals()[module], method)
-		except:
-			raise Error.ErrorWrong('method')
-
-		# Request
-
-		return func(self, **params)
+        return await call(name, self, params)

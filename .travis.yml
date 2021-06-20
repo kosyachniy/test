@@ -1,14 +1,25 @@
-# language: node_js
-# node_js:
-#   - "stable"
-# cache:
-#   directories:
-#     - node_modules
-language: node_js
-node_js: node
-# cache: npm
-# install:
-#   - cd web
+sudo: required
+
+services:
+  - docker
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.29.0
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+before_script:
+  - cd docker
+  - docker-compose -p web up --build
+
 # script:
-#   - npm test
-script: cd web && npm install && npm test
+#   - docker-compose exec users python manage.py test
+#   - docker-compose exec users black project
+#   - docker-compose exec users flake8 project
+
+after_script:
+  - docker-compose down

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
 // Redux
@@ -22,53 +22,45 @@ function genereteToken() {
 }
 
 
-export default class App extends React.Component {
-	state = {
-		showPopUp: false,
-	}
+const App = () => {
+    const [showPopUp, setShowPopUp] = useState(false)
 
-	handlerPopUp = (page) => {
-		this.setState({ showPopUp: page })
-	}
+    useEffect(() => { // WillMount
+        // Token
 
-	componentWillMount() {
-		// Token
+        let token = localStorage.getItem('token')
 
-		let token = localStorage.getItem('token')
+        if (token === null) {
+            token = genereteToken()
+            localStorage.setItem('token', token)
+        }
+    }, [])
 
-		if (token === null) {
-			token = genereteToken()
-			localStorage.setItem('token', token)
-		}
-	}
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
+                <Header handlerPopUp={ setShowPopUp } />
 
-	render() {
-		const { showPopUp } = this.state;
+                <Body />
 
-		return (
-			<Provider store={store}>
-				<BrowserRouter>
-					<Header handlerPopUp={ this.handlerPopUp } />
+                { showPopUp && (
+                    <>
+                        { showPopUp === 'auth' && (
+                            <Auth handlerPopUp={ setShowPopUp } />
+                        ) }
+                        { showPopUp === 'mail' && (
+                            <Mail handlerPopUp={ setShowPopUp } />
+                        ) }
+                        { showPopUp === 'online' && (
+                            <Online handlerPopUp={ setShowPopUp } />
+                        ) }
+                    </>
+                ) }
 
-					<Body />
-
-					{ showPopUp && (
-						<>
-							{ showPopUp === 'auth' && (
-								<Auth handlerPopUp={ this.handlerPopUp } />
-							) }
-							{ showPopUp === 'mail' && (
-								<Mail handlerPopUp={ this.handlerPopUp } />
-							) }
-							{ showPopUp === 'online' && (
-								<Online handlerPopUp={ this.handlerPopUp } />
-							) }
-						</>
-					) }
-
-					<Footer />
-				</BrowserRouter>
-			</Provider>
-		)
-	}
+                <Footer />
+            </BrowserRouter>
+        </Provider>
+    )
 }
+
+export default App;

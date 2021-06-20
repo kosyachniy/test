@@ -1,10 +1,11 @@
-Flask==1.1.2
-Flask-Cors==3.0.8
-Flask-SocketIO==3.3.2
-pymongo==3.10.1
-python-engineio==3.5.1
-python-socketio==3.1.2
-requests==2.23.0
-eventlet==0.25.2
-gunicorn==20.0.4
-Pillow==7.1.1
+# env/bin/python -m pip install -U --force-reinstall pip
+
+fastapi==0.63.0
+uvicorn==0.13.4
+websockets==8.1 # For Socket.IO
+httptools==0.1.1 # For routing
+python-socketio==5.1.0
+pymongo==3.11.2
+requests==2.25.1
+Pillow==8.1.
+pyTelegramBotAPI==3.7.8

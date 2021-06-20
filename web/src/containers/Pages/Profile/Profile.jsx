@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -6,130 +6,118 @@ import api from '../../../func/api'
 import Avatar from '../../../components/Avatar'
 
 
-const checkPassword = password => {
-	return (password.search(/\d/) !== -1) && (password.search(/[A-Za-z]/) !== -1);
-}
+// const checkPassword = password => {
+//     return (password.search(/\d/) !== -1) && (password.search(/[A-Za-z]/) !== -1);
+// }
 
 const Profile = (props) => {
-	const { profile, profileUpdate } = props
-	const { t } = useTranslation()
+    const { profile, profileUpdate } = props
+    const { t } = useTranslation()
+    const [login, setLogin] = useState(profile.login)
+    const [name, setName] = useState(profile.name)
+    const [surname, setSurname] = useState(profile.surname)
+    const [mail, setMail] = useState(profile.mail)
+    const [password, setPassword] = useState('')
+    const [avatar, setAvatar] = useState(profile.avatar)
+    const [file, setFile] = useState(null)
 
-	const [state, setState] = useState({
-		login: profile.login,
-		name: profile.name,
-		surname: profile.surname,
-		mail: profile.mail,
-		password: '',
-		avatar: profile.avatar,
-		file: null,
-	})
+    const accountEdit = () => {
+        const handlerSuccess = res => {
+            profileUpdate({login, name, surname, mail, password, avatar})
+        }
 
-	const accountEdit = () => {
-		const handlerSuccess = res => {
-			profileUpdate({
-				login: state.login,
-				name: state.name,
-				surname: state.surname,
-				mail: state.mail,
-				password: state.password,
-				avatar: res.avatar,
-			})
-		}
+        const data = { login, name, surname, mail}
 
-		const data = {
-			login: state.login,
-			name: state.name,
-			surname: state.surname,
-			mail: state.mail,
-		}
+        if (password.length) {
+            data['password'] = password
+        }
 
-		if (state.password.length) {
-			data['password'] = state.password
-		}
+        if (avatar !== profile.avatar) {
+            data['avatar'] = avatar
+            data['file'] = file
+        }
 
-		if (state.avatar !== profile.avatar) {
-			data['avatar'] = state.avatar
-			data['file'] = state.file
-		}
+        api('account.edit', data, handlerSuccess)
+    }
 
-		api('account.edit', data, handlerSuccess)
-	}
+    const updateAvatar = (avatar, file) => {
+        setAvatar(avatar)
+        setFile(file)
+    }
 
-	const updateAvatar = (avatar, file) => {
-		setState({ ...state, avatar, file })
-	}
+    if (profile.id === 0) {
+        return (
+            <Redirect to="/" />
+        )
+    }
 
-	if (profile.id === 0) {
-		return (<Redirect to="/" />)
-	}
-
-	return (
-		<div className="album py-5">
-			<div className="container">
-				<Avatar avatar={state.avatar} file={state.file} updateAvatar={updateAvatar} />
-				<form>
-					<div className="input-group mb-3">
-						<input
-							value={state.name}
-							onChange={(event) => { setState({ ...state, name: event.target.value }) }}
-							placeholder={t('profile.name')}
-							type="text"
-							aria-label="First name"
-							className="form-control"
-						/>
-						<input
-							value={state.surname}
-							onChange={(event) => { setState({ ...state, surname: event.target.value }) }}
-							placeholder={t('profile.surname')}
-							type="text"
-							aria-label="Last name"
-							className="form-control"
-						/>
-					</div>
-					<div className="input-group flex-nowrap mb-3">
-						<div className="input-group-prepend">
-							<span className="input-group-text" id="addon-wrapping">@</span>
-						</div>
-						<input
-							value={state.login}
-							onChange={(event) => { setState({ ...state, login: event.target.value }) }}
-							placeholder={t('profile.login')}
-							type="text"
-							className="form-control"
-							aria-label="Username"
-							aria-describedby="addon-wrapping"
-						/>
-					</div>
-					<div className="input-group mb-3">
-						<input
-							value={state.mail}
-							onChange={(event) => { setState({ ...state, mail: event.target.value }) }}
-							placeholder={t('profile.mail')}
-							type="email"
-							className="form-control"
-							autoComplete="false"
-						/>
-					</div>
-					<div className="form-group">
-						<input
-							value={state.password}
-							onChange={(event) => { setState({ ...state, password: event.target.value }) }}
-							placeholder={t('profile.password')}
-							type="password"
-							className="form-control"
-							autoComplete="false"
-						/>
-					</div>
-					<input
-						type="button"
-						className="btn btn-success"
-						value={t('system.save')}
-						onClick={accountEdit}
-					/>
-				</form>
-			</div>
-		</div>
-	);
+    return (
+        <div className="album py-5">
+            <div className="container">
+                <Avatar avatar={avatar} file={file} updateAvatar={updateAvatar} />
+                <form>
+                    <div className="input-group mb-3">
+                        <input
+                            value={name}
+                            onChange={(event) => { setName(event.target.value) }}
+                            placeholder={t('profile.name')}
+                            type="text"
+                            aria-label="First name"
+                            className="form-control"
+                        />
+                        <input
+                            value={surname}
+                            onChange={(event) => { setSurname(event.target.value) }}
+                            placeholder={t('profile.surname')}
+                            type="text"
+                            aria-label="Last name"
+                            className="form-control"
+                        />
+                    </div>
+                    <div className="input-group flex-nowrap mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="addon-wrapping">@</span>
+                        </div>
+                        <input
+                            value={login}
+                            onChange={(event) => { setLogin(event.target.value) }}
+                            placeholder={t('profile.login')}
+                            type="text"
+                            className="form-control"
+                            aria-label="Username"
+                            aria-describedby="addon-wrapping"
+                        />
+                    </div>
+                    <div className="input-group mb-3">
+                        <input
+                            value={mail}
+                            onChange={(event) => { setMail(event.target.value) }}
+                            placeholder={t('profile.mail')}
+                            type="email"
+                            className="form-control"
+                            autoComplete="false"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input
+                            value={password}
+                            onChange={(event) => { setPassword(event.target.value) }}
+                            placeholder={t('profile.password')}
+                            type="password"
+                            className="form-control"
+                            autoComplete="false"
+                        />
+                    </div>
+                    <input
+                        type="button"
+                        className="btn btn-success"
+                        value={t('system.save')}
+                        onClick={accountEdit}
+                    />
+                </form>
+            </div>
+        </div>
+    );
 };
 
 export default Profile;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { withTranslation } from 'react-i18next'
 
@@ -7,46 +7,55 @@ import api from '../../../func/api'
 import Card from '../../../components/Card'
 
 
-class Grid extends React.Component {
-	getPost = (data={}) => {
-		const handlerSuccess = (res) => {
-			this.props.postsGet(res['posts']);
-		}
+const Grid = (props) => {
+    // const { t } = props
 
-		api('posts.get', data, handlerSuccess)
-	}
+    const getPost = (data={}) => {
+        const handlerSuccess = (res) => {
+            props.postsGet(res['posts']);
+        }
 
-	componentWillMount() {
-		this.getPost()
-	}
+        api('posts.get', data, handlerSuccess)
+    }
 
-	render() {
-		// const { t } = this.props
+    useEffect(() => {
+        getPost()
+    }, [])
 
-		return (
-			<>
-				<div className="album py-4">
-					<Link to="/post/add">
-						<button
-							type="button"
-							className="btn btn-success"
-							style={ {width: '100%'} }
-						>
-							<i className="fas fa-plus" />
-						</button>
-					</Link>
-				</div>
+    return (
+        <>
+            <div className="row">
+                <div className="col-xs-10 col-sm-10 col-md-10">
+                    <div className="btn-group">
+                        <button type="button" className="btn btn-default"><i className="fas fa-th-large"></i></button>
+                        <button type="button" className="btn btn-default"><i className="fas fa-th-list"></i></button>
+                        <button type="button" className="btn btn-default"><i className="fas fa-image"></i></button>
+                    </div>
+                </div>
+                <div className="col-xs-2 col-sm-2 col-md-2" style={ {textAlign: 'right'} }>
+                    <div className="btn-group">
+                        <Link to="/post/add">
+                            <button
+                                type="button"
+                                className="btn btn-success"
+                                style={ {width: '100%'} }
+                            >
+                                <i className="fas fa-plus" />
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
 
-				<div className="album py-2">
-					<div className="row">
-						{ this.props.posts.map((el, num) =>
-							<Card post={ el } key={ num } />
-						) }
-					</div>
-				</div>
-			</>
-		)
-	}
+            <div className="album py-2">
+                <div className="row">
+                    { props.posts.map((el, num) =>
+                        <Card post={ el } key={ num } />
+                    ) }
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default withTranslation()(Grid);

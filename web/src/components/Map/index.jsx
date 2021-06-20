@@ -2,7 +2,7 @@ import _ from "lodash";
 import React from 'react';
 import { compose, withProps } from 'recompose';
 
-import { GoogleMap, Marker, withGoogleMap, withScriptjs, InfoWindow } from 'react-google-maps';
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'; // , InfoWindow
 // import { Link } from 'react-router-dom';
 
 import { maps as sets } from '../../sets'
@@ -12,45 +12,45 @@ import marker from './marker.svg';
 
 
 class Maps extends React.Component {
-	constructor(props) {
+    constructor(props) {
         super(props);
 
-		this.state = {
-            zoom: sets.zoom,
-            center: sets.center,
-            current: sets.center,
+        this.state = {
+            zoom: props.zoom ? props.zoom : sets.zoom,
+            center: props.center ? props.center : sets.center,
+            current: props.center ? props.center : sets.center,
             markers: [],
         }
     }
 
     componentWillMount() {
-		if (window.navigator && window.navigator.geolocation) {
-			window.navigator.geolocation.getCurrentPosition(
-				(pos) => {
-					const coords = pos.coords;
-					// console.log('My', coords);
-					this.setState({ current: { lat: coords.latitude, lng: coords.longitude }});
-				},
-				// (error) => {console.log(error)},
-				// { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
-			);
-		}
+        if (!this.props.center) {
+            if (window.navigator && window.navigator.geolocation) {
+                window.navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const coords = pos.coords;
+                        // console.log('My', coords);
+                        this.setState({ current: { lat: coords.latitude, lng: coords.longitude }});
+                    },
+                    // (error) => {console.log(error)},
+                    // { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
+                );
+            }
+        }
 
-		// getGeo(this);
-
-		console.log(this.props, this.state)
+        // getGeo(this);
     }
 
-	// handleOpen = (id) => {
-	// 	let markers = this.state.markers
-	// 	markers[id].toggle = true
-	// 	this.setState({ markers })
-	// }
+    // handleOpen = (id) => {
+    //     let markers = this.state.markers
+    //     markers[id].toggle = true
+    //     this.setState({ markers })
+    // }
 
-	// handleClose = (id) => {
-	// 	let markers = this.state.markers
-	// 	markers[id].toggle = false
-	// 	this.setState({ markers })
+    // handleClose = (id) => {
+    //     let markers = this.state.markers
+    //     markers[id].toggle = false
+    //     this.setState({ markers })
     // }
 
     // handleFavorite = (id) => {

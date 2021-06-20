@@ -1,21 +1,20 @@
-import React from 'react'
-
-import './style.css'
 import Map from '../../../components/Map'
 
+import './style.css'
 
-export default class WindowMap extends React.Component {
-	// componentWillMount() {
-	// 	this.setState({pet: document.location.search.split('&')[0].split('=').pop()});
-	// }
 
-	render() {
-		return (
-			<div id="map">
-				<div>
-					<Map />
-				</div>
-			</div>
-		)
-	}
+const WindowMap = () => {
+    // componentWillMount() {
+    //     this.setState({pet: document.location.search.split('&')[0].split('=').pop()});
+    // }
+
+    return (
+        <div id="map">
+            <div>
+                <Map />
+            </div>
+        </div>
+    )
 }
+
+export default WindowMap;
