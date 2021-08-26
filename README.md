@@ -46,23 +46,6 @@ Android | Front-end | React Native | JavaScript | planned
             <td align="center"><img src="re/img/socketio_logo.png" alt="Socket.IO" height="70" /></td>
             <td><img src="re/img/socketio_name.png" alt="Socket.IO" height="70" /></td>
         </tr>
-        <tr>
-            <td rowspan="4" align="center">Front-end</td>
-            <td align="center"><img src="re/img/reactjs_logo.png" alt="ReactJS" height="70" /></td>
-            <td><img src="re/img/reactjs_name.png" alt="ReactJS" height="70" /></td>
-        </tr>
-        <tr>
-            <td align="center"><img src="re/img/redux_logo.png" alt="Redux" height="70" /></td>
-            <td><img src="re/img/redux_name.png" alt="Redux" height="70" /></td>
-        </tr>
-        <tr>
-            <td align="center"><img src="re/img/bootstrap_logo.png" alt="Bootstrap 4" height="70" /></td>
-            <td><img src="re/img/bootstrap_name.png" alt="Bootstrap 4" height="70" /></td>
-        </tr>
-        <tr>
-            <td align="center"><img src="re/img/ckeditor_logo.png" alt="CKEditor 5" height="70" /></td>
-            <td><img src="re/img/ckeditor_name.png" alt="CKEditor 5" height="70" /></td>
-        </tr>
     </tbody>
 </table>
 
