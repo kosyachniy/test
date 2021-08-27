@@ -29,6 +29,4 @@ else:
     db = MongoClient(
         host=sets['host'],
         port=27017,
-        authSource='admin',
-        authMechanism='SCRAM-SHA-1'
     )[sets['db']]
