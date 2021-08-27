@@ -1,7 +1,7 @@
 {
     "mongo": {
         "host": "localhost:27017",
-        "db": "uple",
+        "db": "NAME",
         "login": "",
         "password": ""
     },
@@ -26,5 +26,5 @@
     "locales": ["en", "ru"],
     "locale": "en",
     "timezone": 3,
-    "bug_chat": 0
+    "bug_chat": -0
 }

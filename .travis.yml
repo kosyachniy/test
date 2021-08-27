@@ -3,7 +3,8 @@ language: python
 python:
   - "3.9"
 
-services: mongodb
+services:
+  - mongodb
 
 install:
   - make setup-tests
