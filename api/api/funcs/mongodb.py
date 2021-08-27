@@ -16,11 +16,19 @@ with open('sets.json', 'r') as file:
 
 
 # Global variables
-db = MongoClient(
-    host=sets['host'],
-    port=27017,
-    username=sets['login'],
-    password=sets['password'],
-    authSource='admin',
-    authMechanism='SCRAM-SHA-1'
-)[sets['db']]
+if sets['login'] and sets['password']:
+    db = MongoClient(
+        host=sets['host'],
+        port=27017,
+        username=sets['login'],
+        password=sets['password'],
+        authSource='admin',
+        authMechanism='SCRAM-SHA-1'
+    )[sets['db']]
+else:
+    db = MongoClient(
+        host=sets['host'],
+        port=27017,
+        authSource='admin',
+        authMechanism='SCRAM-SHA-1'
+    )[sets['db']]
