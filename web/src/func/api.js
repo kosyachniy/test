@@ -1,5 +1,10 @@
 import axios from 'axios'
+
+import getToken from './token'
+
+
 import { server } from '../sets'
+
 
 function serverRequest(json={}) {
     console.log(server, json)
@@ -16,15 +21,24 @@ function handlerResult(res, handlerSuccess, handlerError) {
     }
 }
 
-export default function api(method, params={}, handlerSuccess=()=>{}, handlerError=()=>{}) {
+export default function api(
+    method,
+    params={},
+    handlerSuccess=()=>{},
+    handlerError=()=>{},
+) {
     let json = {
         'method': method,
         'params': params,
     }
 
     json['network'] = 'web'
-    json['language'] = localStorage.getItem('lang')
-    json['token'] = localStorage.getItem('token')
+    json['locale'] = localStorage.getItem('locale')
+    json['token'] = getToken()
 
-    serverRequest(json).then((res) => handlerResult(res.data, handlerSuccess, handlerError))
+    serverRequest(json).then(
+        (res) => handlerResult(res.data, handlerSuccess, handlerError)
+    )
 }
+
+// Socket.IO

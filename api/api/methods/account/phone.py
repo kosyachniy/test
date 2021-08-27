@@ -4,164 +4,150 @@ The authorization by phone method of the account object of the API
 
 # import re
 
-from ...funcs import check_params, online_start, get_sids
-from ...funcs.mongodb import db
+from ...funcs import BaseType, validate, online_start, report
+from ...models.user import User, pre_process_phone
+from ...models.token import Token
+from ...models.action import Action
 # from ...funcs.smsc import SMSC
-from ...errors import ErrorAccess # ErrorInvalid, ErrorWrong
+from ...errors import ErrorAccess, ErrorInvalid
 
 
-async def handle(this, **x):
+class Type(BaseType):
+    phone: str
+    # code: Union[str, int] = None
+    # promo: str = None
+
+@validate(Type)
+async def handle(this, request, data):
     """ By phone """
 
-    # Checking parameters
+    # TODO: the same token
 
-    check_params(x, (
-        ('phone', True, str),
-    ))
+    # No access
+    if request.user.status < 2:
+        raise ErrorAccess('phone')
 
-    #
+    # Authorize
 
-    x['phone'] = _process_phone(x['phone'])
-
-    # Login
-
-    new = False
-
-    if not list(db['users'].find({'phone': x['phone']}, {'_id': True})):
-        # raise ErrorWrong('login')
-
-        _registrate(
-            this.user,
-            this.timestamp,
-            3 if this.language == 1 else 4,
-            phone=x['phone'],
-        )
-
-        new = True
-
-    #
-
-    db_condition = {'phone': x['phone']}
-
-    db_filter = {
-        '_id': False,
-        'id': True,
-        'status': True,
-        'balance': True,
-        # 'rating': True,
-        'login': True,
-        'name': True,
-        'surname': True,
-        'busy': True,
-        'avatar': True,
-        'subscription': True,
-        'channels': True,
-        'description': True,
-        'phone': True,
-        'discount': True,
+    fields = {
+        'id',
+        'login',
+        'avatar',
+        'name',
+        'surname',
+        'phone',
+        'mail',
+        'social',
+        'status',
     }
 
-    res = db['users'].find_one(db_condition, db_filter)
+    phone = pre_process_phone(data.phone)
+    new = False
+    users = User.get(phone=phone, fields=fields)
+
+    if len(users) == 0:
+        new = True
+    elif len(users) > 1:
+        report.warning(
+            "More than 1 user",
+            {'phone': data.phone},
+        )
+
+    # Register
+    if new:
+        action = Action(
+            name='account_reg',
+            details={
+                'network': request.network,
+                'ip': request.ip,
+                'phone': data.phone,
+            },
+        )
+
+        try:
+            user_data = User(
+                phone=data.phone,
+                phone_verified=False,
+                actions=[action.json(default=False)],
+            )
+        except ValueError as e:
+            raise ErrorInvalid(e)
+
+        user_data.save()
+        user_id = user_data.id
+
+        user = User.get(ids=user_id, fields=fields)
+
+        # Report
+        report.important(
+            "User registration by phone",
+            {
+                'user': user_id,
+                'token': request.token,
+                'network': request.network,
+            },
+        )
+
+    else:
+        user = users[0]
+
+        action = Action(
+            name='account_auth',
+            details={
+                'ip': request.ip,
+            },
+        )
+
+        user.actions.append(action.json(default=False))
+        user.save()
 
     # Assignment of the token to the user
 
-    if not this.token:
-        raise ErrorAccess('token')
+    if not request.token:
+        raise ErrorAccess('phone')
 
-    req = {
-        'token': this.token,
-        'user': res['id'],
-        'time': this.timestamp,
-    }
-    db['tokens'].insert_one(req)
+    try:
+        token = Token.get(ids=request.token, fields={'user'})
+    except:
+        token = Token(id=request.token)
 
-    # Assignment of the tasks to the user
-
-    for task in db['tasks'].find({'token': this.token}):
-        task['user'] = res['id']
-        del task['token']
-        db['tasks'].save(task)
-
-    # Update online users
-
-    await online_start(this.sio, this.token)
-
-    # There is an active space
-
-    db_condition = {
-        '$or': [
-            {'teacher': res['id']},
-            {'student': res['id']}
-        ],
-        'status': {'$in': (0, 1)}
-    }
-
-    db_filter = {
-        '_id': False,
-        'id': True,
-        'student': True,
-        'task': True,
-    }
-    study = db['study'].find_one(db_condition, {'_id': False})
-
-    if study:
-        # Redirect to space
-
-        space = '/space/{}/?task={}&type={}'.format(
-            study['id'], study['task'],
-            ('student', 'teacher')[study['student'] != res['id']],
+    if token.user:
+        report.warning(
+            "Reauth",
+            {'from': token.user, 'to': user.id, 'token': request.token},
         )
 
-        sids = get_sids(res['id'])
+    token.user = user.id
+    token.save()
 
-        for sid in sids:
-            this.sio.emit('space_return', {
-                'url': space,
-            }, room=sid, namespace='/main')
+    # TODO: Pre-registration data (promos, actions, posts)
+
+    # Update online users
+    await online_start(this.sio, request.token)
+
+    # TODO: redirect to active space
+    # if space_id:
+    #     for socket_id in Socket(user=user.id):
+    #         this.sio.emit('space_return', {
+    #             'url': f'/space/{space_id}',
+    #         }, room=socket_id)
 
     # Response
-
-    req = {
-        'id': res['id'],
-        'status': res['status'],
-        'balance': res['balance'],
-        'login': res['login'],
+    return {
+        **user.json(fields=fields),
         'new': new,
-        'description': res['description'],
-        'subscription': res['subscription'],
-        'private': bool(len(res['channels'])),
-        'phone': res['phone'] if 'phone' in res else '',
     }
 
-    if 'avatar' in res:
-        req['avatar'] = '/load/opt/' + res['avatar']
-    else:
-        req['avatar'] = 'user.png'
-
-    if 'discount' in res:
-        req['discount'] = res['discount']
-
-    return req
-
-# By phone
-
-# async def phone_send(this, **x):
+# async def phone_send(this, request, data):
 #     """ Send a code to the phone """
-
-#     # Checking parameters
-
-#     check_params(x, (
-#         ('phone', True, str),
-#         ('promo', False, str),
-#     ))
 
 #     # Process a phone number
 
-#     phone = _process_phone(x['phone'])
+#     phone = _process_phone(data.phone)
 
 #     # Already sent
 
-#     code = db['codes'].find_one({'phone': phone}, {'_id': True})
+#     code = db.codes.find_one({'phone': phone}, {'_id': True})
 
 #     if code:
 #         raise ErrorRepeat('send')
@@ -176,24 +162,21 @@ async def handle(this, **x):
 
 #     #
 
-#     req = {
-#         'phone': phone,
-#         'code': code,
-#         'token': this.token,
-#         'time': this.timestamp,
-#     }
+#     promo = Promo(
+#         phone=phone,
+#         code=code,
+#         token=request.token,
+#         promo=data.promo,
+#     )
 
-#     if 'promo' in x:
-#         req['promo'] = x['promo']
-
-#     db['codes'].insert_one(req)
+#     promo.save()
 
 #     #
 
 #     sms = SMSC()
 #     res = sms.send_sms(
 #         str(phone),
-#         'Hi!\n{} — This is your login code.'.format(code)
+#         f"Hi!\n{code} — This is your login code."
 #     )
 #     print(phone, res)
 
@@ -206,74 +189,61 @@ async def handle(this, **x):
 
 #     return res
 
-# async def phone_check(this, **x):
+# async def phone_check(this, request):
 #     """ Phone checking """
-
-#     # Checking parameters
-
-#     check_params(x, (
-#         ('phone', False, str),
-#         ('code', False, (int, str)),
-#         ('promo', False, str),
-#     ))
 
 #     #
 
-#     if not this.token:
+#     if not request.token:
 #         raise ErrorInvalid('token')
 
 #     #
 
-#     if 'code' in x and not x['code']:
-#         del x['code']
-
-#     if 'phone' in x:
-#         x['phone'] = _process_phone(x['phone'])
+#     data.phone = _process_phone(data.phone)
 
 #     #
 
-#     if 'code' in x:
+#     if data.code:
 #         # Code preparation
 
-#         x['code'] = str(x['code'])
+#         data.code = str(data.code)
 
 #         # Verification of code
 
 #         db_condition = {
-#             'code': x['code'],
+#             'code': data.code,
 #         }
 
-#         if 'phone' in x:
-#             db_condition['phone'] = x['phone']
+#         if data.phone:
+#             db_condition['phone'] = data.phone
 #         else:
-#             db_condition['token'] = this.token
+#             db_condition['token'] = request.token
 
 #         db_filter = {
 #             '_id': False,
 #             'phone': True,
 #         }
 
-#         code = db['codes'].find_one(db_condition, db_filter)
+#         code = db.codes.find_one(db_condition, db_filter)
 
-#         if code:
-#             # ! Входить по старым кодам
-#             pass
-#             # db['codes'].remove(code)
-
-#         else:
+#         if not code:
 #             raise ErrorWrong('code')
+
+#         # ! Входить по старым кодам
+#         pass
+#         # db.codes.remove(code)
 
 #     else:
 #         code = {
-#             'phone': x['phone'],
+#             'phone': data.phone,
 #         }
 
-#         if 'promo' in x:
-#             code['promo'] = x['promo']
+#         if data.promo:
+#             code['promo'] = data.promo
 
 #     #
 
-#     user = db['users'].find_one({'phone': code['phone']})
+#     user = db.users.find_one({'phone': code['phone']})
 
 #     #
 
@@ -281,8 +251,8 @@ async def handle(this, **x):
 
 #     if not user:
 #         res = _registrate(
-#             this.user,
-#             this.timestamp,
+#             request.user,
+#             request.timestamp,
 #             phone=code['phone'],
 #         )
 
@@ -290,25 +260,27 @@ async def handle(this, **x):
 
 #         #
 
-#         user = db['users'].find_one({'id': res['id']})
+#         user = db.users.find_one({'id': res['id']})
 
 #     if 'promo' in code:
 #         # Referal code
 
 #         if code['promo'].lower()[:5] == 'tensy':
-#             referal_parent = int(re.sub('\D', '', code['promo']))
+#             referal_parent = int(re.sub(r'\D', '', code['promo']))
 
 #             if user['id'] != referal_parent:
-#                 user['referal_parent'] = referal_parent
-#                 db['users'].save(user)
+#                 db.users.update_one(
+#                     {'id': user['id']},
+#                     {'$set': {'referal_parent': referal_parent}}
+#                 )
 
 #         else:
 #             # Bonus code
 
-#             promo = db['promos'].find_one({'promo': code['promo'].upper()})
+#             promo = db.promos.find_one({'promo': code['promo'].upper()})
 
 #             if not promo:
-#                 promo = db['promos'].find_one({
+#                 promo = db.promos.find_one({
 #                     'promo': code['promo'].lower(),
 #                 })
 
@@ -321,27 +293,29 @@ async def handle(this, **x):
 #                         if promo['repeat'] \
 #                             or user['id'] not in promo['users']:
 #                             # Выполнение скрипта
-
-#                             user['balance'] += promo['balance']
-#                             db['users'].save(user)
+#                             db.users.update_one(
+#                                 {'id': user['id']},
+#                                 {'$inc': {'balance': promo['balance']}}
+#                             )
 
 #                             # Сохранение результатов в промокоде
-
-#                             promo['users'].append(user['id'])
-#                             db['promos'].save(promo)
+#                             db.promos.update_one(
+#                                 {'id': user['id']},
+#                                 {'$push': {'users': user['id']}}
+#                             )
 
 #     # Присвоение токена пользователю
 
 #     req = {
-#         'token': this.token,
+#         'token': request.token,
 #         'user': user['id'],
-#         'time': this.timestamp,
+#         'time': request.timestamp,
 #     }
-#     db['tokens'].insert_one(req)
+#     db.tokens.insert_one(req)
 
 #     # Update online users
 
-#     await online_start(this.sio, this.token)
+#     await online_start(this.sio, request.token)
 
 #     # Response
 

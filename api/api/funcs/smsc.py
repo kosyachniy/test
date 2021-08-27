@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# SMSC.RU API (smsc.ru) версия 1.9 (01.02.2017)
+# NOTE: SMSC.RU API (smsc.ru) версия 1.9 (01.02.2017)
 
 """
 Sending SMS messages
@@ -17,7 +17,7 @@ except ImportError:
     from urllib.parse import quote
 
 import json
-with open('keys.json', 'r') as file:
+with open('sets.json', 'r') as file:
     s = json.loads(file.read())['smsc']
 
 # Константы для настройки библиотеки

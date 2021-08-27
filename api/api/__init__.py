@@ -7,67 +7,71 @@ The API
 import time
 
 ## Local
-from .funcs import get_network, get_language, get_user_by_token
+from .funcs import get_network, get_language, get_user
 from .methods import call
 from .background import background
-from .errors import ErrorWrong
 
 
-# pylint: disable=R0902,R0903,W0201
+class Request():
+    """ Request container """
+
+    def __init__(self, ip, socket, token, network, locale):
+        self.timestamp = time.time()
+        self.ip = ip
+        self.socket = socket
+        self.token = token
+        self.network = get_network(network)
+        self.locale = get_language(locale)
+        self.user = get_user(token)
+
+
 class API():
     """ API """
 
-    def __init__(self, client, sio=None):
-        self.client = client
+    def __init__(self, sio=None, **sets):
+        # TODO: Libraries
+
         self.sio = sio
+
+        # Settings
+        self.client = sets['client']
+
+        # Networks
+        self.tg = sets['tg']
+        self.vk = sets['vk']
+        self.google = sets['google']
 
         # Background processes
         background(self.sio)
 
-    # pylint: disable=C0103,R0913
     async def method(
         self,
         name,
-        params=None,
+        data=None,
         ip=None,
-        sid=None,
+        socket=None,
         token=None,
         network=0,
-        language=0,
+        locale=0,
     ):
         """ Call API method """
 
-        if not params:
-            params = {}
+        if not data:
+            data = {}
 
-        # print(name, params)
+        # print(name, data, ip, socket, token, network, locale)
 
-        self.timestamp = time.time()
-        self.ip = ip
-        self.sid = sid
-        self.token = token
-        self.network = get_network(network)
-        self.language = get_language(language)
-        self.user = get_user_by_token(token)
-
-        # Remove extra indentation
-
-        for i in params:
-            if isinstance(params[i], str):
-                params[i] = params[i].strip()
+        request = Request(ip, socket, token, network, locale)
 
         # # Action tracking
 
-        # req = {
-        #     'time': self.timestamp,
-        #     'user': self.user['id'],
-        #     'ip': self.ip,
-        #     'method': name,
-        #     'params': params,
+        # action = Action(
+        #     name=name,
+        #     data=data,
+        #     request=request,
         # }
 
-        # db['actions'].insert_one(req)
+        # action.save()
 
         # API method
-
-        return await call(name, self, params)
+        return await call(name, self, request, data)

@@ -6,11 +6,11 @@ import re
 import hashlib
 
 from . import Base, Attribute
-from ..funcs import load_image
+from ..funcs import load_image, get_language
 from ..funcs.mongodb import db
 
 
-RESERVED = (
+RESERVED = {
     'admin', 'admins', 'administrator', 'administrators', 'administration',
     'author', 'support', 'manager', 'client',
     'account', 'profile', 'login', 'sign', 'signin', 'signup', 'password',
@@ -20,7 +20,7 @@ RESERVED = (
     'phone', 'code', 'codes', 'mail',
     'google', 'facebook', 'telegram', 'instagram', 'twitter',
     'anon', 'anonym', 'anonymous', 'undefined', 'ufo',
-)
+}
 
 
 def default_login(instance):
@@ -32,8 +32,7 @@ def check_login(id_, cont):
     """ Login checking """
 
     # Already registered
-
-    users = db['users'].find_one({'login': cont}, {'_id': True, 'id': True})
+    users = db.users.find_one({'login': cont}, {'_id': True, 'id': True})
     if users and users['id'] != id_:
         return False
 
@@ -61,14 +60,14 @@ def process_login(cont):
 
     return cont.lower()
 
-# pylint: disable=W0613
+# pylint: disable=unused-argument
 def check_password(id_, cont):
     """ Password checking """
 
     # Invalid password
 
     cond_length = not 6 <= len(cont) <= 40
-    cond_symbols = re.findall(r'[^a-zA-Z0-9!@#$%&*-+=,./?|~]', cont)
+    cond_symbols = re.findall(r'[^a-zA-Z0-9!@#$%&*-+=,./?|]~', cont)
     cond_letters = not re.findall(r'[a-zA-Z]', cont)
     cond_digits = not re.findall(r'[0-9]', cont)
 
@@ -82,19 +81,19 @@ def process_password(cont):
 
     return hashlib.md5(bytes(cont, 'utf-8')).hexdigest()
 
-# pylint: disable=W0613
+# pylint: disable=unused-argument
 def check_name(id_, cont):
     """ Name checking """
 
     return cont.isalpha()
 
-# pylint: disable=W0613
+# pylint: disable=unused-argument
 def check_surname(id_, cont):
     """ Surname checking """
 
     return cont.replace('-', '').isalpha()
 
-# pylint: disable=W0613
+# pylint: disable=unused-argument
 def check_phone(id_, cont):
     """ Phone checking """
 
@@ -121,7 +120,7 @@ def check_mail(id_, cont):
         return False
 
     # Already registered
-    users = db['users'].find_one({'mail': cont}, {'_id': False, 'id': True})
+    users = db.users.find_one({'mail': cont}, {'_id': False, 'id': True})
     if users and users['id'] != id_:
         return False
 
@@ -137,6 +136,14 @@ def process_lower(cont):
 
     return cont.lower()
 
+def default_status(instance):
+    """ Default status """
+
+    if instance.id:
+        return 3
+
+    return 2
+
 # def default_referal_code():
 #     ALL_SYMBOLS = string.ascii_lowercase + string.digits
 #     generate = lambda length=8: ''.join(
@@ -149,6 +156,16 @@ class User(Base):
     """ User """
 
     _db = 'users'
+    _search_fields = {
+        'login',
+        'name',
+        'surname',
+        'phone',
+        'mail',
+        'description',
+        # 'actions',
+    }
+
     login = Attribute(
         types=str,
         default=default_login,
@@ -185,14 +202,23 @@ class User(Base):
     mail_verified = Attribute(types=bool, default=True)
     social = Attribute(types=list, default=[]) # TODO: list[{}] # TODO: checking
     description = Attribute(types=str)
-    language = Attribute(types=int, default=0)
-    status = Attribute(types=int, default=2) # TODO: or 3
-    funnel = Attribute(types=list, default=[]) # TODO: list[dict]
+    language = Attribute(
+        types=int,
+        default=0,
+        pre_processing=get_language,
+    )
+    status = Attribute(types=int, default=default_status)
+    actions = Attribute(types=list, default=[]) # TODO: list[dict]
     online = Attribute(types=list, default=[]) # TODO: list[tuple]
     # TODO: UTM / promo
+    # TODO: discount
     # TODO: balance
+    # TODO: subscription
     # TODO: rating
     # TODO: referal_parent
     # TODO: referal_code
+    # TODO: channels
+    # TODO: attempts (password)
+    # TODO: middle name
 
     # TODO: del Base.user

@@ -6,7 +6,7 @@ WORKDIR .
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
-# Using Russian text may lead to errors 0, 137
+# NOTE: Using Russian text may lead to errors 0, 137
 # Output print to the Docker console
 ENV PYTHONUNBUFFERED 1
 
@@ -18,35 +18,14 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Settings
-ARG PROTOCOL
-ARG HOST
-ARG PORT
-ARG MODE
-ARG SIDE_OPTIMIZED
-ARG MONGO_LOGIN
-ARG MONGO_PASSWORD
-ARG GOOGLE_ID
-ARG GOOGLE_SECRET
-ARG TG_TOKEN
-ARG BUG_CHAT
-ARG SMSC_LOGIN
-ARG SMSC_PASSWORD
-ARG VK_ID
-ARG VK_SECRET
-RUN rm -f sets.json keys.json
+ARG PROTOCOL HOST PORT MODE SIDE_OPTIMIZED LOCALES LOCALE TIMEZONE \
+    MONGO_LOGIN MONGO_PASSWORD GOOGLE_ID GOOGLE_SECRET TG_TOKEN BUG_CHAT \
+    SMSC_LOGIN SMSC_PASSWORD VK_ID VK_SECRET
+RUN rm -f sets.json
 RUN echo '{ \n\
     "mongo": { \n\
         "host": "db", \n\
-        "db": "uple" \n\
-    }, \n\
-    "client": "'$PROTOCOL'://'$HOST':'$PORT'/", \n\
-    "mode": "'$MODE'", \n\
-    "side_optimized": '$SIDE_OPTIMIZED', \n\
-    "bug_chat": '$BUG_CHAT' \n\
-} \n\
-' >> sets.json
-RUN echo '{ \n\
-    "mongo": { \n\
+        "db": "uple", \n\
         "login": "'$MONGO_LOGIN'", \n\
         "password": "'$MONGO_PASSWORD'" \n\
     }, \n\
@@ -57,16 +36,23 @@ RUN echo '{ \n\
     "tg": { \n\
         "token": "'$TG_TOKEN'" \n\
     }, \n\
+    "vk": { \n\
+        "client_id": '$VK_ID', \n\
+        "client_secret": "'$VK_SECRET'" \n\
+    }, \n\
     "smsc": { \n\
         "login": "'$SMSC_LOGIN'", \n\
         "password": "'$SMSC_PASSWORD'" \n\
     }, \n\
-    "vk": { \n\
-        "client_id": '$VK_ID', \n\
-        "client_secret": "'$VK_SECRET'" \n\
-    } \n\
+    "client": "'$PROTOCOL'://'$HOST':'$PORT'/", \n\
+    "mode": "'$MODE'", \n\
+    "side_optimized": '$SIDE_OPTIMIZED', \n\
+    "locales": '$LOCALES', \n\
+    "locale": "'$LOCALE'", \n\
+    "timezone": '$TIMEZONE', \n\
+    "bug_chat": '$BUG_CHAT' \n\
 } \n\
-' >> keys.json
+' >> sets.json
 
 # Run
 CMD bash run.sh

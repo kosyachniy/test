@@ -8,7 +8,7 @@ source <(cat .env | \
 set +a
 
 echo $EXTERNAL_HOST
-echo $MAIL
+echo $EMAIL
 
 #
 
@@ -20,7 +20,7 @@ fi
 domains=($EXTERNAL_HOST)
 rsa_key_size=4096
 data_path="../data/certbot"
-staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
+staging=0 # NOTE: Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
@@ -69,9 +69,9 @@ for domain in "${domains[@]}"; do
 done
 
 # Select appropriate email arg
-case "$MAIL" in
+case "$EMAIL" in
   "") email_arg="--register-unsafely-without-email" ;;
-  *) email_arg="--email $MAIL" ;;
+  *) email_arg="--email $EMAIL" ;;
 esac
 
 # Enable staging mode if needed

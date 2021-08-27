@@ -2,46 +2,56 @@
 Types checking functionality for the API
 """
 
-from ..errors import ErrorSpecified, ErrorInvalid, ErrorType
+from functools import wraps
+
+from pydantic import BaseModel as BaseType
+from pydantic.error_wrappers import ValidationError
+
+from ..errors import ErrorSpecified, ErrorType
 
 
-def check_params(data, filters):
-    """ Checking parameters """
+def _strip(data):
+    """ Remove extra indentation """
 
-    # TODO: Удалять другие поля (которых нет в списке)
+    if not isinstance(data, dict):
+        return
 
-    for i in filters:
-        if i[0] in data:
-            # Invalid data type
-            if not isinstance(i[2], (list, tuple)):
-                el_type = (i[2],)
-            else:
-                el_type = i[2]
+    for field in set(data):
+        if isinstance(data[field], str):
+            data[field] = data[field].strip()
+            continue
 
-            cond_type = not isinstance(data[i[0]], el_type)
-            cond_iter = isinstance(data[i[0]], (tuple, list))
+        if isinstance(data[field], dict):
+            _strip(data[field])
+            continue
 
-            try:
-                cond_iter_el = cond_iter \
-                    and any(not isinstance(j, i[3]) for j in data[i[0]])
-            except:
-                raise ErrorType(i[0])
+        if isinstance(data[field], (list, tuple, set)):
+            for el in data[field]:
+                _strip(el)
 
-            if cond_type or cond_iter_el:
-                raise ErrorType(i[0])
+def _check(data, filters):
+    """ Convert the parameters to the required object """
 
-            cond_null = isinstance(i[-1], bool) and i[-1] and cond_iter \
-                and not data[i[0]]
+    try:
+        return filters(**data)
 
-            if cond_null:
-                raise ErrorInvalid(i[0])
+    except ValidationError as e:
+        field = e.errors()[0]['loc'][0]
 
-        # Not all fields are filled
-        elif i[1]:
-            raise ErrorSpecified(i[0])
+        if field in data:
+            raise ErrorType(field)
 
-        # Default
-        else:
-            data[i[0]] = None
+        raise ErrorSpecified(field)
 
-    return data
+
+def validate(filters):
+    """ Validation of function parameters """
+
+    def decorator(f):
+        @wraps(f)
+        def wrapper(this, request, data):
+            _strip(data)
+            data = _check(data, filters)
+            return f(this, request, data)
+        return wrapper
+    return decorator

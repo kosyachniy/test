@@ -3,90 +3,80 @@ The getting method of the post object of the API
 """
 
 import re
+from typing import Union
 
-from ...funcs import check_params
+from ...funcs import BaseType, validate
 from ...models.post import Post
+from ...errors import ErrorAccess
 
+
+class Type(BaseType):
+    id: Union[int, list[int]] = None
+    count: int = None
+    offset: int = None
+    search: str = None
+    # TODO: category: int = None
+    # TODO: language: Union[str, int] = None
+    # TODO: fields: list[str] = None
 
 # pylint: disable=unused-argument
-async def handle(this, **x):
+@validate(Type)
+async def handle(this, request, data):
     """ Get """
 
-    # Checking parameters
-
-    check_params(x, (
-        ('id', False, (int, list), int),
-        ('count', False, int),
-        ('offset', False, int),
-        ('search', False, str),
-        # ('category', False, int),
-        # ('language', False, (int, str)),
-    ))
+    # No access
+    if request.user.status < 2:
+        raise ErrorAccess('get')
 
     # # Language
     # # TODO: pre-processing params (None, strip(), value -> code)
-
-    # if 'language' in x:
-    #     x['language'] = get_language(x['language'])
+    # if data.language:
+    #     data.language = get_language(data.language)
     # else:
-    #     x['language'] = this.language
-
-    # Single / multiple
-
-    process_single = False
-
-    if 'id' in x and not isinstance(x['id'], (list, tuple, set)):
-        process_single = True
+    #     data.language = request.language
 
     # Fields
-
     fields = {
         'name',
+        'cont',
         'reactions',
+        'cover',
         'created',
         # 'geo',
     }
 
-    if process_single:
-        fields.add('cont')
-
     # Get
-
     posts = Post.get(
-        ids=x.get('id', None),
-        count=x.get('count', None),
-        offset=x.get('offset', None),
-        search=x.get('search', None),
+        ids=data.id,
+        count=data.count,
+        offset=data.offset,
+        search=data.search,
         fields=fields,
-        # category=x.get('category', None),
-        # language=x.get('language', None),
+        # category=data.category,
+        # language=data.language,
     )
 
     # Processing
+    if isinstance(posts, list):
+        for post in posts:
+            ## Cover from the first image
+            if not post.cover:
+                res = re.search(
+                    r'<img src="[^"]*">',
+                    post.cont
+                )
 
-    for post in posts:
-        ## Cover from the first image
-        if not post.cover:
-            res = re.search(
-                r'<img src="[^"]*">',
-                post.cont
-            )
+                if res is not None:
+                    post.cover = res[0].split('"')[1].split('/')[-1]
 
-            if res is not None:
-                post.cover = res[0].split('"')[1].split('/')[-1]
-
-        ## Content
-        if not process_single:
+            ## Content
             post.cont = re.sub(
-                '<[^>]*>',
+                r'<[^>]*>',
                 '',
                 post.cont
             ).replace('&nbsp;', ' ')
 
     # Response
-
-    res = {
+    return {
         'posts': posts,
     }
-
-    return res

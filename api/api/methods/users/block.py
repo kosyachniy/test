@@ -2,34 +2,30 @@
 The blocking method of the user object of the API
 """
 
-from ...funcs import check_params
-from ...funcs.mongodb import db
-from ...errors import ErrorWrong, ErrorAccess
+from ...funcs import BaseType, validate
+from ...models.user import User
+from ...errors import ErrorAccess
 
 
-async def handle(this, **x):
+class Type(BaseType):
+    id: int
+
+@validate(Type)
+async def handle(this, request, data):
     """ Block """
 
-    # Checking parameters
-
-    check_params(x, (
-        ('id', True, int),
-    ))
-
     # Get user
-
-    users = db['users'].find_one({'id': x['id']})
-
-    ## Wrond ID
-    if not users:
-        raise ErrorWrong('id')
+    user = User.get(ids=data.id, fields={'status'})
 
     # No access
-    if this.user['status'] < 6 or users['status'] > this.user['status']:
+    if request.user.status < 6 or user.status > request.user.status:
         raise ErrorAccess('block')
 
-    # Change status
-    users['status'] = 1
-
     # Save
-    db['users'].save(users)
+    user.status = 1
+    user.save()
+
+    # Response
+    return {
+        'status': user.status,
+    }

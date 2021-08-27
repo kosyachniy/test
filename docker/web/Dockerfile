@@ -12,21 +12,15 @@ RUN npm install
 COPY . .
 
 # Settings
-ARG PROTOCOL
-ARG HOST
-ARG PORT
-ARG NAME
-ARG MAIL
-ARG PHONE
-ARG SOCIAL
-ARG GOOGLE_MAP_KEY
-ARG GOOGLE_MAP_LAT
-ARG GOOGLE_MAP_LNG
-ARG GOOGLE_MAP_ZOOM
-RUN rm -f src/sets.json src/keys.json
+ARG PROTOCOL HOST PORT LOCALES LOCALE TIMEZONE NAME MAIL PHONE SOCIAL \
+    GOOGLE_MAP_KEY GOOGLE_MAP_LAT GOOGLE_MAP_LNG GOOGLE_MAP_ZOOM
+RUN rm -f src/sets.json
 RUN echo '{ \n\
     "server": "'$PROTOCOL'://'$HOST':'$PORT'/api/", \n\
     "sockets": "'$PROTOCOL'://'$HOST':'$PORT'/", \n\
+    "locales": '$LOCALES', \n\
+    "locale": "'$LOCALE'", \n\
+    "timezone": '$TIMEZONE', \n\
     "name": "'$NAME'", \n\
     "mail": "'$MAIL'", \n\
     "phone": "'$PHONE'", \n\
@@ -36,16 +30,11 @@ RUN echo '{ \n\
             "lat": '$GOOGLE_MAP_LAT', \n\
             "lng": '$GOOGLE_MAP_LNG' \n\
         }, \n\
-        "zoom": '$GOOGLE_MAP_ZOOM' \n\
-    } \n\
-} \n\
-' >> src/sets.json
-RUN echo '{ \n\
-    "maps": { \n\
+        "zoom": '$GOOGLE_MAP_ZOOM', \n\
         "key": "'$GOOGLE_MAP_KEY'" \n\
     } \n\
 } \n\
-' >> src/keys.json
+' >> src/sets.json
 
 # Run
 CMD npm start

@@ -2,55 +2,61 @@
 The authorization method of the account object of the API
 """
 
-from ...funcs import check_params, online_start
+from ...funcs import BaseType, validate, online_start, report
 from ...models.user import User, process_login, process_lower, \
                            pre_process_phone, process_password
 from ...models.token import Token
-from ...errors import ErrorWrong, ErrorAccess
+from ...models.action import Action
+from ...errors import ErrorInvalid, ErrorWrong, ErrorAccess
 
 
-async def handle(this, **x):
+class Type(BaseType):
+    login: str # login / mail / phone
+    password: str
+
+@validate(Type)
+async def handle(this, request, data):
     """ Sign in / Sign up """
 
     # TODO: Сокет на авторизацию на всех вкладках токена
     # TODO: Перезапись информации этого токена уже в онлайне
+    # TODO: Pre-registration data (promos, actions, posts)
+    # TODO: without password
+    # TODO: the same token
+    # TODO: Only by token (automaticaly, without any info)
 
-    # Checking parameters
-
-    check_params(x, (
-        ('login', True, str), # login / mail / phone
-        ('password', True, str),
-    ))
+    # No access
+    if request.user.status < 2:
+        raise ErrorAccess('auth')
 
     # Data preparation
-
-    # TODO: None / not ''
-    # if 'password' in x and not x['password']:
-    #     del x['password']
-
+    # TODO: optimize
     fields = {
+        'id',
         'login',
         'avatar',
         'name',
         'surname',
+        'phone',
         'mail',
+        'social',
         'status',
-    } # TODO: optimize
+    }
 
-    # Login
+    # Authorize
 
     new = False
 
     try:
-        login = process_login(x['login'])
+        login = process_login(data.login)
         user = User.get(login=login, fields=fields)[0]
     except:
         new = True
 
     if new:
         try:
-            mail = process_lower(x['mail'])
-            user = User.get(mail=mail,fields=fields)[0]
+            mail = process_lower(data.login)
+            user = User.get(mail=mail, fields=fields)[0]
         except:
             pass
         else:
@@ -58,55 +64,95 @@ async def handle(this, **x):
 
     if new:
         try:
-            phone = pre_process_phone(x['phone'])
+            phone = pre_process_phone(data.login)
             user = User.get(phone=phone, fields=fields)[0]
         except:
             pass
         else:
             new = False
 
+    # Check password
     if not new:
-        password = process_password(x['password'])
+        password = process_password(data.password)
+        users = User.get(id=user.id, password=password)
 
-        try:
-            User.get(id=user.id, password=password)
-        except:
+        if not users:
             raise ErrorWrong('password')
 
     # Register
-
     if new:
-        user_data = User(
-            password=x['password'],
-            mail=x['login'], # TODO: login / phone
-            mail_verified=False,
+        action = Action(
+            name='account_reg',
+            details={
+                'network': request.network,
+                'ip': request.ip,
+                'mail': data.login,
+                'password': data.password,
+            },
         )
+
+        try:
+            user_data = User(
+                password=data.password,
+                mail=data.login, # TODO: login
+                mail_verified=False,
+                actions=[action.json(default=False)], # TODO: without `.json()`
+            )
+        except ValueError as e:
+            raise ErrorInvalid(e)
+
         user_data.save()
         user_id = user_data.id
 
-        user = User.get(id=user_id, fields=fields)[0]
+        user = User.get(ids=user_id, fields=fields)
+
+        # Report
+        report.important(
+            "User registration by mail",
+            {
+                'user': user_id,
+                'login': data.login,
+                'token': request.token,
+                'network': request.network,
+            },
+        )
+
+    # Update
+    else:
+        action = Action(
+            name='account_auth',
+            details={
+                'ip': request.ip,
+            },
+        )
+
+        user.actions.append(action.json(default=False))
+        user.save()
 
     # Assignment of the token to the user
 
-    if not this.token:
-        raise ErrorAccess('token')
+    if not request.token:
+        raise ErrorAccess('auth')
 
-    token = Token(
-        id=this.token,
-        user=user.id,
-    )
+    try:
+        token = Token.get(ids=request.token, fields={'user'})
+    except:
+        token = Token(id=request.token)
 
+    if token.user:
+        report.warning(
+            "Reauth",
+            {'from': token.user, 'to': user.id, 'token': request.token},
+        )
+
+    token.user = user.id
     token.save()
 
     # Update online users
-
-    await online_start(this.sio, this.token)
+    await online_start(this.sio, request.token)
 
     # Response
-
-    res = user.json(fields={
-        'id', 'login', 'avatar', 'name', 'surname', 'mail', 'status',
-    })
-    res['new'] = new
-
-    return res # TODO: del None
+    return {
+        **user.json(fields=fields),
+        'new': new,
+    }

@@ -6,7 +6,7 @@ WORKDIR .
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
-# Using Russian text may lead to errors 0, 137
+# NOTE: Using Russian text may lead to errors 0, 137
 # Output print to the Docker console
 ENV PYTHONUNBUFFERED 1
 
@@ -19,20 +19,15 @@ COPY . .
 
 # Settings
 ARG PROTOCOL HOST PORT TG_TOKEN
-RUN rm -f sets.json keys.json
+RUN rm -f sets.json
 RUN echo '{ \n\
     "server": "'$PROTOCOL'://'$HOST':'$PORT'/api/", \n\
     "tg": { \n\
-        "server": "'$PROTOCOL'://'$HOST':'$PORT'/tg/" \n\
-    } \n\
-} \n\
-' >> sets.json
-RUN echo '{ \n\
-    "tg": { \n\
+        "server": "'$PROTOCOL'://'$HOST':'$PORT'/tg/", \n\
         "token": "'$TG_TOKEN'" \n\
     } \n\
 } \n\
-' >> keys.json
+' >> sets.json
 
 # Run
-CMD python main.py
+CMD python app.py

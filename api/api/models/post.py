@@ -3,22 +3,25 @@ Post model of DB object
 """
 
 from . import Base, Attribute
+from ..funcs import load_image, reimg
 
 
 class Post(Base):
     """ Post """
 
     _db = 'posts'
-    reactions = Attribute(dict, {
+    _search_fields = {'name', 'cont', 'tags'}
+
+    cont = Attribute(types=str, default='', processing=reimg)
+    reactions = Attribute(types=dict, default={
         'views': [], # TODO: + UTM
         'likes': [],
         'reposts': [],
         'comments': [],
     }) # TODO: attributes
-    cont = Attribute(str, '')
-    cover = Attribute(str)
+    cover = Attribute(types=str, processing=load_image)
+    tags = Attribute(types=list, default=[])
     # TODO: language
     # TODO: category
-    # TODO: tags
     # TODO: source
     # TODO: actions

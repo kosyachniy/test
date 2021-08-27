@@ -1,12 +1,12 @@
-# Ola
+# Template full stack application
 ## Description
-Web-app on JS with JSON-RPC API
+Web-app on JS with Python JSON-RPC API
 
 Form | Side | Stack | Language | Path
 ---|---|---|---|---
 API | Back-end | FastAPI | Python | ``` api/ ```
 Web app | Front-end | React | JavaScript | ``` web/ ```
-Telegram bot | Back-end | AIOGram | Python | planned
+Telegram bot | Back-end | AIOGram | Python | ``` tg/ ```
 iOS | Front-end | React Native | JavaScript | planned
 Android | Front-end | React Native | JavaScript | planned
 
@@ -35,7 +35,7 @@ Android | Front-end | React Native | JavaScript | planned
         </tr>
         <tr>
             <td rowspan="3" align="center">Back-end</td>
-            <td align="center"><img src="re/img/fastapi_logo.png" alt="FastAPI" height="70" /></td>
+            <td align="center"<img src="re/img/fastapi_logo.png" alt="FastAPI" height="70" /></td>
             <td><img src="re/img/fastapi_name.png" alt="FastAPI" height="70" /></td>
         </tr>
         <tr>
@@ -68,20 +68,19 @@ Android | Front-end | React Native | JavaScript | planned
 
 ## Install & Use with Docker
 ### Development
-1. Customize file ` docker/.env `
+1. Customize file ` docker/.env ` & ` Makefile `
 
-2. Run Docker Compose
+2. Run
 ```
-cd docker/
-docker-compose up --build
+make run
 ```
 
 3. Open
 
 Go to ` http://localhost/ `
 
-### Production
-1. Customize files ` docker/.env ` & ` docker/server/nginx.prod.conf ` & ` docker/server/nginx.cert.conf ` & ` docker/cert.sh `
+### Production (dedicated server)
+1. Customize file ` docker/.env ` & ` Makefile `
 
 2. Create encryption keys
 ```
@@ -92,12 +91,31 @@ chmod 777 cert.sh
 
 3. Run Docker Compose
 ```
-docker-compose -f docker-compose.prod.yml up --build
+docker-compose -f docker-compose.alone.yml -p web up --build
 ```
+(your project name instead of ` web `)
 
 4. Open
 
-Go to ``` https://web.kosyachniy.com/ ``` (your link)
+Go to ` https://web.kosyachniy.com/ ` (your link)
+
+### Production (with multiple projects)
+1. Customize files ` docker/.env ` & ` Makefile `
+
+2. Run Docker Compose
+```
+cd docker/
+docker-compose -f docker-compose.prod.yml -p web up --build
+```
+(your project name instead of ` web `)
+
+3. Set up NGINX using [docker/server/nginx.server.conf](docker/server/nginx.server.conf) (if not done)
+
+More: [SERVER.md](SERVER.md)
+
+4. Open
+
+Go to ` https://web.kosyachniy.com/ ` (your link)
 
 ## Install & Use without Docker
 ### Back-end
@@ -106,7 +124,7 @@ Go to ``` https://web.kosyachniy.com/ ``` (your link)
 cd api/
 ```
 
-2. Customize files ``` sets.json ``` & ``` keys.json ```
+2. Customize file ` sets.json `
 
 3. Virtual environment
 ```
@@ -125,7 +143,7 @@ env/bin/uvicorn app:app --host 0.0.0.0 --port 5000 --proxy-headers --reload
 cd web/
 ```
 
-2. Customize files ``` src/sets.js ``` & ``` src/keys.js ```
+2. Customize file ` src/sets.json `
 
 3. Virtual environment
 ```

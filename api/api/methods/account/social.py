@@ -3,50 +3,150 @@ The authorization via social networks method of the account object of the API
 """
 
 # import urllib
-import json
 # import base64
 
 # import requests
 
-from ...funcs import check_params # online_start
-# from ...funcs.mongodb import db
-# from ...errors import ErrorInvalid, ErrorWrong, ErrorAccess
+from ...funcs import BaseType, validate, report # online_start
+from ...models.user import User
+from ...models.token import Token
+from ...models.action import Action
+from ...errors import ErrorAccess # ErrorInvalid, ErrorWrong
 
 
-with open('keys.json', 'r') as file:
-    keys = json.loads(file.read())
-    VK = keys['vk']
-    GOOGLE = keys['google']
-
+class Type(BaseType):
+    user: int
+    login: str
+    name: str
+    surname: str
+    # TODO: code: str
 
 # pylint: disable=unused-argument
-async def handle(this, **x):
+@validate(Type)
+async def handle(this, request, data):
     """ By social network """
 
-    # Checking parameters
+    # TODO: reports
+    # TODO: actions
+    # TODO: avatar
+    # TODO: the same token
 
-    check_params(x, (
-        ('user', True, int),
-        # ('code', True, str),
-    ))
+    # No access
+    if request.user.status < 2:
+        raise ErrorAccess('social')
 
-    #
+    fields = {
+        'id',
+        'login',
+        'avatar',
+        'name',
+        'surname',
+        'phone',
+        'mail',
+        'social',
+        'status',
+    }
+
+    users = User.get(social={'$elemMatch': {
+        'id': request.network,
+        'user': data.user,
+    }}, fields=fields)
+
+    if len(users):
+        new = False
+        user = users[0]
+
+        action = Action(
+            name='account_auth',
+            details={
+                'network': request.network,
+            },
+        )
+
+        user.actions.append(action.json(default=False))
+        user.save()
+
+    else:
+        new = True
+
+        action = Action(
+            name='account_reg',
+            details={
+                'network': request.network,
+                'ip': request.ip,
+                'social_user': data.user,
+                'login': data.login,
+            },
+        )
+
+        user = User(
+            login=data.login, # TODO: conflicts
+            name=data.name,
+            surname=data.surname,
+            social=[{
+                'id': request.network, # TODO: Several accounts in one network
+                'user': data.user,
+                'login': data.login,
+                'name': data.name,
+                'surname': data.surname,
+                'language': request.locale,
+            }],
+            actions=[action.json(default=False)], # TODO: without `.json()`
+        )
+
+        user.save()
+
+        # Report
+        report.important(
+            "User registration by mail",
+            {
+                'user': user.id,
+                'login': f'@{data.login}' if data.login else None,
+                'token': request.token,
+                'network': request.network,
+            },
+        )
+
+    # Assignment of the token to the user
+
+    if not request.token:
+        raise ErrorAccess('auth')
+
+    try:
+        token = Token.get(ids=request.token, fields={'user'})
+    except:
+        token = Token(id=request.token)
+
+    if token.user:
+        report.warning(
+            "Reauth",
+            {'from': token.user, 'to': user.id, 'token': request.token},
+        )
+
+    token.user = user.id
+    token.save()
+
+    # Response
+    return {
+        **user.json(fields=fields),
+        'new': new,
+    }
 
     # user_id = 0
     # new = False
     # mail = ''
 
     # # ВКонтакте
-    # if x['id'] == 1:
-    #     link = 'https://oauth.vk.com/access_token?client_id={}&client_secret=' \
-    #            '{}&redirect_uri={}callback&code={}'
+    # if data.id == 1:
+    #     link = 'https://oauth.vk.com/access_token?client_id={}' \
+    #            '&client_secret={}&redirect_uri={}callback&code={}'
     #     response = json.loads(
     #         requests.get(
     #             link.format(
-    #                 VK['client_id'],
-    #                 VK['client_secret'],
+    #                 this.vk['client_id'],
+    #                 this.vk['client_secret'],
     #                 this.client,
-    #                 x['code'],
+    #                 data.code,
     #             )
     #         ).text
     #     )
@@ -60,14 +160,14 @@ async def handle(this, **x):
     #         mail = response['email']
 
     # # Google
-    # elif x['id'] == 3:
+    # elif data.id == 3:
     #     link = 'https://accounts.google.com/o/oauth2/token'
     #     cont = {
-    #         'client_id': GOOGLE['client_id'],
-    #         'client_secret': GOOGLE['client_secret'],
-    #         'redirect_uri': '{}callback'.format(this.client),
+    #         'client_id': this.google['client_id'],
+    #         'client_secret': this.google['client_secret'],
+    #         'redirect_uri': f'{this.client}callback',
     #         'grant_type': 'authorization_code',
-    #         'code': urllib.parse.unquote(x['code']),
+    #         'code': urllib.parse.unquote(data.code),
     #     }
     #     response = json.loads(requests.post(link, json=cont).text)
 
@@ -94,7 +194,7 @@ async def handle(this, **x):
     # # Sign in
 
     # db_condition = {
-    #     'social': {'$elemMatch': {'id': x['id'], 'user': user_id}},
+    #     'social': {'$elemMatch': {'id': data.id, 'user': user_id}},
     # }
 
     # db_filter = {
@@ -110,7 +210,7 @@ async def handle(this, **x):
     #     # 'balance': True,
     # }
 
-    # res = db['users'].find_one(db_condition, db_filter)
+    # res = db.users.find_one(db_condition, db_filter)
 
     # # Wrong password
     # if not res:
@@ -121,7 +221,7 @@ async def handle(this, **x):
     #     login = ''
     #     avatar = None
 
-    #     if x['id'] == 1:
+    #     if data.id == 1:
     #         if 'access_token' in response:
     #             token = response['access_token']
     #         else:
@@ -155,7 +255,7 @@ async def handle(this, **x):
 
     #         try:
     #             login = response['nickname']
-    #             _check_login(login, this.user)
+    #             _check_login(login, request.user)
     #         except Exception:
     #             login = ''
 
@@ -168,13 +268,13 @@ async def handle(this, **x):
 
     #         try:
     #             if mail:
-    #                 _check_mail(mail, this.user)
+    #                 _check_mail(mail, request.user)
     #         except Exception:
     #             mail = ''
 
-    #     elif x['id'] == 3:
+    #     elif data.id == 3:
     #         # link = 'https://www.googleapis.com/oauth2/v1/userinfo' \
-    #         #        '?access_token={}'.format(x['data']['access_token'])
+    #         #        '?access_token={}'.format(data.data['access_token'])
     #         # res_google = json.loads(requests.get(link).text)
 
     #         try:
@@ -191,7 +291,7 @@ async def handle(this, **x):
 
     #         try:
     #             mail = response['email']
-    #             _check_mail(mail, this.user)
+    #             _check_mail(mail, request.user)
     #         except Exception:
     #             mail = ''
 
@@ -213,7 +313,7 @@ async def handle(this, **x):
     #         '_id': True,
     #     }
 
-    #     user = db['users'].find_one(db_condition, db_filter)
+    #     user = db.users.find_one(db_condition, db_filter)
 
     #     if user:
     #         raise ErrorWrong('hash')
@@ -223,10 +323,10 @@ async def handle(this, **x):
     #         new = True
 
     #         user = _registrate(
-    #             this.user,
-    #             this.timestamp,
+    #             request.user,
+    #             request.timestamp,
     #             social=[{
-    #                 'id': x['id'],
+    #                 'id': data.id,
     #                 'user': user_id,
     #             }],
     #             name=name,
@@ -249,23 +349,23 @@ async def handle(this, **x):
     #             'mail': True,
     #         }
 
-    #         user = db['users'].find_one({'id': user['id']}, db_filter)
+    #         user = db.users.find_one({'id': user['id']}, db_filter)
 
     # # Assignment of the token to the user
 
-    # if not this.token:
+    # if not request.token:
     #     raise ErrorInvalid('token')
 
     # req = {
-    #     'token': this.token,
+    #     'token': request.token,
     #     'user': user['id'],
-    #     'time': this.timestamp,
+    #     'time': request.timestamp,
     # }
-    # db['tokens'].insert_one(req)
+    # db.tokens.insert_one(req)
 
     # # Update online users
 
-    # await online_start(this.sio, this.token)
+    # await online_start(this.sio, request.token)
 
     # # Response
 

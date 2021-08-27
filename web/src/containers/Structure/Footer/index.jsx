@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import {
     changeLang,
+    changeTheme,
 } from '../../../redus';
 
 import Footer from './Footer';
@@ -13,6 +14,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     changeLang,
+    changeTheme,
 };
 
 const FooterContainer = connect(

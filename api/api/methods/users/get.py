@@ -2,31 +2,41 @@
 The getting method of the user object of the API
 """
 
-from ...funcs import check_params
-# from ...funcs.mongodb import db
+from typing import Union
+
+from ...funcs import BaseType, validate, online_back
 from ...models.user import User
+from ...errors import ErrorAccess
 
 
-async def handle(this, **x):
+class Type(BaseType):
+    id: Union[int, list[int]] = None
+    count: int = None
+    offset: int = None
+    fields: list[str] = None
+
+@validate(Type)
+async def handle(this, request, data):
     """ Get """
 
-    # Checking parameters
+    # TODO: cursor
 
-    check_params(x, (
-        ('id', False, (int, list), int),
-        ('count', False, int),
-        ('offset', False, int),
-        ('fields', False, list, str),
-    ))
+    # No access
+    if request.user.status < 2:
+        raise ErrorAccess('get')
+
+    # TODO: Get myself
+    # if not data.id and request.user.id:
+    #     data.id = request.user.id
 
     # Fields
 
     fields = {
         'id',
         'login',
+        'avatar',
         'name',
         'surname',
-        'avatar',
         'status',
         # 'balance',
         # 'rating',
@@ -34,12 +44,13 @@ async def handle(this, **x):
         # 'online',
     }
 
-    process_self = 'id' in x and x['id'] == this.user['id']
-    # process_moderator = this.user['status'] >= 5
-    process_admin = this.user['status'] >= 7
+    process_self = data.id == request.user.id
+    # process_moderator = request.user.status'>= 5
+    process_admin = request.user.status >= 7
 
     if process_self:
         fields |= {
+            'phone',
             'mail',
             'social',
             # 'phone',
@@ -52,33 +63,35 @@ async def handle(this, **x):
 
     if process_admin:
         fields |= {
+            'phone',
             'mail',
             'social',
             # 'phone',
         }
 
-    # Get
+    if data.fields:
+        fields = fields & set(data.fields)
 
+    # Get
     users = User.get(
-        ids=x.get('id', None),
-        count=x.get('count', None),
-        offset=x.get('offset', None),
+        ids=data.id,
+        count=data.count,
+        offset=data.offset,
         fields=fields,
     )
 
-    # # Processing
-
-    # for i in range(len(users)):
-    #     # Online
-    #     users[i]['online'] = db['sockets'].find_one(
-    #         {'id': users[i]['id']},
-    #         {'_id': True}
-    #     ) == True
+    # Processing
+    # NOTE: user.json(default=True) -> login, status
+    if isinstance(users, list):
+        for i, user in enumerate(users):
+            user = user.json(fields=fields)
+            user['online'] = online_back(user['id'])
+            users[i] = user
+    else:
+        users = users.json(fields=fields)
+        users['online'] = online_back(users['id'])
 
     # Response
-
-    res = {
+    return {
         'users': users,
     }
-
-    return res

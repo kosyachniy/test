@@ -2,41 +2,65 @@
 The password recover method of the account object of the API
 """
 
-import string
-import random
-import hashlib
-
-from ...funcs import check_params
-from ...funcs.mongodb import db
-from ...errors import ErrorWrong
+from ...funcs import BaseType, validate, generate_password, report
+from ...models.user import User, process_login, process_lower, pre_process_phone
+from ...errors import ErrorWrong, ErrorAccess
 
 
-ALL_SYMBOLS = string.digits + string.ascii_letters
-
+class Type(BaseType):
+    login: str
 
 # pylint: disable=unused-argument
-async def handle(this, **x):
+@validate(Type)
+async def handle(this, request, data):
     """ Recover password """
 
-    # Checking parameters
+    # No access
+    if request.user.status < 2:
+        raise ErrorAccess('recover')
 
-    check_params(x, (
-        ('login', True, str),
-    ))
+    # Get
 
-    # Get user
+    new = False
 
-    users = db['users'].find_one({'login': x['login']})
+    try:
+        login = process_login(data.login)
+        user = User.get(login=login, fields={})[0]
+    except:
+        new = True
 
-    if not users:
+    if new:
+        try:
+            mail = process_lower(data.login)
+            user = User.get(mail=mail, fields={})[0]
+        except:
+            pass
+        else:
+            new = False
+
+    if new:
+        try:
+            phone = pre_process_phone(data.login)
+            user = User.get(phone=phone, fields={})[0]
+        except:
+            pass
+        else:
+            new = False
+
+    if new:
         raise ErrorWrong('login')
 
-    password = ''.join(random.sample(ALL_SYMBOLS, 15))
-    password_crypt = hashlib.md5(bytes(password, 'utf-8')).hexdigest()
+    # Update password
+    password = generate_password()
+    user.password = password
+    user.save()
 
     # Send
+    # TODO: send by mail
+    # TODO: send by SMS
 
-    # Update password
-
-    users['password'] = password_crypt
-    db['users'].save(users)
+    # Report
+    report.request(
+        "Recover password",
+        {'password': password, 'user': user.id},
+    )

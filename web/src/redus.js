@@ -3,6 +3,9 @@ import i18n from './i18n'
 import { combineReducers, createStore } from 'redux';
 
 
+import { locale as default_locale } from './sets';
+
+
 // actions.js
 export const postsGet = posts => ({
     type: 'POSTS_GET',
@@ -52,41 +55,72 @@ export const changeTheme = theme => {
     }
 }
 
-export const changeLang = lang => {
-    localStorage.setItem('lang', lang)
-    i18n.changeLanguage(lang)
+export const searching = search => {
+    localStorage.setItem('search', search)
+
+    return {
+        type: 'SEARCH',
+        search,
+    }
+}
+
+export const changeLang = locale => {
+    localStorage.setItem('locale', locale)
+    i18n.changeLanguage(locale)
 
     return {
         type: 'CHANGE_LANG',
-        lang,
+        locale,
     }
 }
 
 export const profileIn = profile => {
-    const { id, login, name, surname, mail, avatar, admin } = profile
+    const { id, login, avatar, name, surname, phone, mail, social, status } = profile
 
-    localStorage.setItem('id', id)
-    localStorage.setItem('login', login)
-    localStorage.setItem('name', name)
-    localStorage.setItem('surname', surname)
-    localStorage.setItem('mail', mail)
-    localStorage.setItem('avatar', avatar)
-    localStorage.setItem('admin', admin)
+    if (id) {
+        localStorage.setItem('id', id)
+    }
+    if (login) {
+        localStorage.setItem('login', login)
+    }
+    if (avatar) {
+        localStorage.setItem('avatar', avatar)
+    }
+    if (name) {
+        localStorage.setItem('name', name)
+    }
+    if (surname) {
+        localStorage.setItem('surname', surname)
+    }
+    if (phone) {
+        localStorage.setItem('phone', phone)
+    }
+    if (mail) {
+        localStorage.setItem('mail', mail)
+    }
+    if (social) {
+        localStorage.setItem('social', social)
+    }
+    if (status) {
+        localStorage.setItem('status', status)
+    }
 
     return {
         type: 'PROFILE_IN',
-        id, login, name, surname, mail, avatar, admin,
+        id, login, avatar, name, surname, phone, mail, social, status,
     }
 };
 
 export const profileOut = () => {
     localStorage.removeItem('id')
     localStorage.removeItem('login')
+    localStorage.removeItem('avatar')
     localStorage.removeItem('name')
     localStorage.removeItem('surname')
+    localStorage.removeItem('phone')
     localStorage.removeItem('mail')
-    localStorage.removeItem('avatar')
-    localStorage.removeItem('admin')
+    localStorage.removeItem('social')
+    localStorage.removeItem('status')
 
     return {
         type: 'PROFILE_OUT',
@@ -94,8 +128,8 @@ export const profileOut = () => {
 };
 
 export const profileUpdate = profile => {
-    ['login', 'name', 'surname', 'mail', 'avatar'].map(el => {
-        if (el in profile) {
+    ['login', 'avatar', 'name', 'surname', 'phone', 'mail', 'social', 'status'].map(el => {
+        if (el in profile && profile[el]) {
             localStorage.setItem(el, profile[el])
         }
 
@@ -174,9 +208,10 @@ export const online = (state = {count: null, users: []}, action) => {
 
 export const system = (state = {
     loaded: false,
-    lang: localStorage.getItem('lang'),
+    locale: localStorage.getItem('locale'),
     theme: localStorage.getItem('theme'),
     color: localStorage.getItem('color'),
+    search: localStorage.getItem('search'),
 }, action) => {
     switch (action.type) {
         case 'CHANGE_THEME':
@@ -189,7 +224,7 @@ export const system = (state = {
         case 'CHANGE_LANG':
             return {
                 ...state,
-                lang: action.lang,
+                locale: action.locale,
             };
 
         case 'SYSTEM_LOADED':
@@ -198,12 +233,19 @@ export const system = (state = {
                 loaded: true,
             };
 
+        case 'SEARCH':
+            return {
+                ...state,
+                search: action.search,
+            }
+
         default:
             return {
                 loaded: state.loaded,
-                lang: state.lang || 'ru',
+                locale: state.locale || default_locale,
                 theme: state.theme || 'light',
                 color: state.color || 'dark',
+                search: state.search || '',
             };
     }
 };
@@ -215,6 +257,7 @@ export const profile = (state = {
     surname: null,
     mail: null,
     avatar: null,
+    avatar_optimize: null,
     admin: 2,
 }, action) => {
     switch (action.type) {
@@ -225,7 +268,8 @@ export const profile = (state = {
                 name: action.name,
                 surname: action.surname,
                 mail: action.mail,
-                avatar: action.avatar,
+                avatar: action.avatar ? '/load/' + action.avatar : '/user.png',
+                avatar_optimize: action.avatar ? '/load/opt/' + action.avatar : '/user.png',
                 admin: action.admin,
             };
 
@@ -237,17 +281,32 @@ export const profile = (state = {
                 surname: null,
                 mail: null,
                 avatar: null,
+                avatar_optimize: null,
                 admin: 2,
             };
 
         case 'PROFILE_UPDATE':
-            ['login', 'name', 'surname', 'mail', 'avatar'].map(el => {
-                if (el in action.profile) {
-                    state[el] = action.profile[el]
+            if (action.profile.login) {
+                state.login = action.profile.login
+            }
+            if (action.profile.name) {
+                state.name = action.profile.name
+            }
+            if (action.profile.surname) {
+                state.surname = action.profile.surname
+            }
+            if (action.profile.mail) {
+                state.mail = action.profile.mail
+            }
+            if (action.profile.avatar) {
+                if (action.profile.avatar.indexOf('.')<1) {
+                    state.avatar = action.profile.avatar
+                    state.avatar_optimize = action.profile.avatar
+                } else {
+                    state.avatar = '/load/' + action.profile.avatar
+                    state.avatar_optimize = '/load/opt/' + action.profile.avatar
                 }
-
-                return null;
-            })
+            }
 
             return state
 
@@ -255,10 +314,13 @@ export const profile = (state = {
             return {
                 id: state.id || localStorage.getItem('id') || 0,
                 login: state.login || localStorage.getItem('login'),
+                avatar: state.avatar || (localStorage.getItem('avatar') ? '/load/' + localStorage.getItem('avatar') : '/user.png'),
+                avatar_optimize: state.avatar || (localStorage.getItem('avatar') ? '/load/opt/' + localStorage.getItem('avatar') : '/user.png'),
                 name: state.name || localStorage.getItem('name'),
                 surname: state.surname || localStorage.getItem('surname'),
+                phone: state.phone || localStorage.getItem('phone'),
                 mail: state.mail || localStorage.getItem('mail'),
-                avatar: state.avatar || localStorage.getItem('avatar'),
+                social: state.social || localStorage.getItem('social') || [],
                 admin: state.admin || localStorage.getItem('admin') || 2,
             };
     }

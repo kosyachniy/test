@@ -2,11 +2,14 @@
 Database ciphers
 """
 
-# NOTE: ISO 639-1
-LANGUAGES = (
-    'en',
-    'ru',
-)
+import json
+
+
+with open('sets.json', 'r') as file:
+    sets=json.loads(file.read())
+    LOCALES = sets['locales']
+    DEFAULT_LOCALE = sets['locale']
+
 
 NETWORKS = (
     '',
@@ -18,14 +21,15 @@ NETWORKS = (
 )
 
 USER_STATUSES = (
-    'deleted',
-    'blocked', # 'archive',
-    'normal',
-    'registered', # 'confirmed',
-    'editor', # 'curator',
-    'moderator',
-    'admin',
-    'owner',
+    'deleted', # not specified # Does not exist
+    'blocked', # archive # Does not have access to resources
+    'normal', # guest
+    'registered', # confirmed # Save personal data & progress
+    'editor', # curator # View reviews
+    'verified', # Delete reviews
+    'moderator', # Block users
+    'admin', # Delete posts
+    'owner', # Can't be blocked
 )
 
 
@@ -35,7 +39,7 @@ def get_network(code):
     if code in NETWORKS:
         return NETWORKS.index(code)
 
-    if code in range(len(NETWORKS)):
+    if 0 <= code < len(NETWORKS):
         return code
 
     return 0
@@ -43,10 +47,13 @@ def get_network(code):
 def get_language(code):
     """ Get language code by cipher """
 
-    if code in LANGUAGES:
-        return LANGUAGES.index(code)
+    if code is None:
+        return DEFAULT_LOCALE
 
-    if code in range(len(LANGUAGES)):
+    if code in LOCALES:
+        return LOCALES.index(code)
+
+    if code in range(len(LOCALES)):
         return code
 
     return 0

@@ -7,7 +7,7 @@
 .vscode/
 
 # Keys & sets
-# *.env
+*.env
 
 # Data
 /data/

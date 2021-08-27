@@ -12,8 +12,9 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
         volumes:
             - ../data/db:/data/db
-        #     - ../data/logs:/data/logs
-        # command: --logpath /data/logs/mongodb.log
+            - ../data/logs:/data/logs
+            - ../docker/db/mongod.conf:/etc/mongod.conf
+        command: --config /etc/mongod.conf
 
     api:
         build:
@@ -25,6 +26,9 @@ services:
                 - PORT=443
                 - MODE=${MODE}
                 - SIDE_OPTIMIZED=${SIDE_OPTIMIZED}
+                - LOCALES=${LOCALES}
+                - LOCALE=${LOCALE}
+                - TIMEZONE=${TIMEZONE}
                 - MONGO_LOGIN=${MONGO_LOGIN}
                 - MONGO_PASSWORD=${MONGO_PASSWORD}
                 - GOOGLE_ID=${GOOGLE_ID}
@@ -41,7 +45,7 @@ services:
         env_file: .env
         volumes:
             - ../data/load:/data/load
-            # Для горячей перезагрузки
+            # For hot reload
             - ../api/api:/api
             - ../api/app.py:/app.py
 
@@ -67,8 +71,11 @@ services:
                 - PROTOCOL=${PROTOCOL}
                 - HOST=${EXTERNAL_HOST}
                 - PORT=443
+                - LOCALES=${LOCALES}
+                - LOCALE=${LOCALE}
+                - TIMEZONE=${TIMEZONE}
                 - NAME=${NAME}
-                - MAIL=${MAIL}
+                - MAIL=${EMAIL}
                 - PHONE=${PHONE}
                 - SOCIAL=${SOCIAL}
                 - GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}

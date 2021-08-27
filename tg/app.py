@@ -1,5 +1,5 @@
 """
-Telegram bot
+Telegram bot Endpoints (Transport level)
 """
 
 # Libraries
@@ -7,27 +7,22 @@ Telegram bot
 import json
 
 ## External
-from aiogram import Bot, types
-from aiogram.dispatcher import Dispatcher
+from aiogram import types
 from aiogram.utils.executor import start_webhook
+
+## Local
+from funcs import api
+from funcs.tg import bot, dp, send
 
 
 # Params
 with open('sets.json', 'r') as file:
-    sets = json.loads(file.read())
-    WEBHOOK_URL = sets['tg']['server']
-
-with open('keys.json', 'r') as file:
-    keys = json.loads(file.read())
-    TG_TOKEN = keys['tg']['token']
+    sets = json.loads(file.read())['tg']
+    WEBHOOK_URL = sets['server']
+    TG_TOKEN = sets['token']
 
 WEBAPP_HOST = '0.0.0.0'
 WEBAPP_PORT = 80
-
-
-# Global variables
-bot = Bot(token=TG_TOKEN)
-dp = Dispatcher(bot)
 
 
 # Funcs
@@ -35,10 +30,27 @@ dp = Dispatcher(bot)
 async def echo(message: types.Message):
     """ Main handler """
 
-    await bot.send_message(message.chat.id, message.text)
+    social_user = message.from_user
+    text = message.text
+
+    error, result = api(social_user, 'posts.get', {
+        'search': text,
+    })
+
+    if not error:
+        posts = result['posts']
+        res = "\n---------------\n".join(
+            f"#{post['id']} {post['name']}"
+            for post in posts
+        )
+    else:
+        res = f"{text}: {result}"
+
+    text = f"---\n{res}\n---"
+    await send(social_user.id, text)
 
 
-async def on_start():
+async def on_start(dp):
     """ Handler on the bot start """
 
     await bot.set_webhook(WEBHOOK_URL)

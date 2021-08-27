@@ -1,9 +1,10 @@
 """
-Endpoints (Transport level)
+API Endpoints (Transport level)
 """
 
-# # Logging
+# pylint: disable=wrong-import-order,wrong-import-position
 
+# # Logging
 # import logging
 # logging.basicConfig(filename='error.log', level=logging.DEBUG)
 # logging.getLogger('socketio').setLevel(logging.ERROR)
@@ -11,12 +12,10 @@ Endpoints (Transport level)
 # logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
 
 # Main app
-
 from fastapi import FastAPI, Request
 app = FastAPI(title='Web app API')
 
 # CORS
-
 from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
@@ -27,7 +26,6 @@ app.add_middleware(
 )
 
 # Socket.IO
-
 import socketio
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
 asgi = socketio.ASGIApp(sio)
@@ -57,24 +55,27 @@ asgi = socketio.ASGIApp(sio)
 ## Libraries
 ### System
 import json
+import traceback
+
+### External
+from pydantic import BaseModel
 
 ### Local
 from api import API
+from api.funcs import report
 from api.errors import BaseError
 
 ## Params
 with open('sets.json', 'r') as file:
-    CLIENT = json.loads(file.read())['client']
+    sets = json.loads(file.read())
 
 ## Global variables
 api = API(
-    client=CLIENT,
     sio=sio,
+    **sets,
 )
 
 ## Endpoints
-from pydantic import BaseModel
-
 ### Main
 class Input(BaseModel):
     """ Main endpoint model """
@@ -82,7 +83,7 @@ class Input(BaseModel):
     method: str
     params: dict = {}
     network: str = ''
-    locale: str = 'en'
+    locale: str = None
     token: str = None
 
 @app.post('/')
@@ -102,16 +103,26 @@ async def index(data: Input, request: Request):
             ip=request.client.host,
             token=data.token,
             network=data.network,
-            language=data.locale,
+            locale=data.locale,
         )
 
-    except BaseError as error:
-        req['error'] = error.code
-        req['result'] = str(error)
+    except BaseError as e:
+        req['error'] = e.code
+        req['result'] = str(e)
 
-    # except Exception as error:
-    #     req['error'] = 1
-    #     req['result'] = 'Server error'
+    except Exception as e:
+        req['error'] = 1
+        req['result'] = "Server error"
+
+        trace = traceback.extract_tb(e.__traceback__)[-1]
+        report.critical(
+            "Server error",
+            {
+                'file': trace.filename,
+                'line': trace.lineno,
+                'error': str(e),
+            },
+        )
 
     else:
         req['error'] = 0
@@ -141,7 +152,7 @@ async def connect(sid, request, data):
     api.method(
         'account.connect',
         ip=request['asgi.scope']['client'][0],
-        sid=sid,
+        socket=sid,
     )
 
 @sio.on('online')
@@ -151,7 +162,7 @@ async def online(sid, data):
     await api.method(
         'account.online',
         data,
-        sid=sid,
+        socket=sid,
     )
 
 @sio.on('disconnect')
@@ -160,8 +171,8 @@ async def disconnect(sid):
 
     await api.method(
         'account.disconnect',
-        sid=sid,
+        socket=sid,
     )
 
 
-app.mount('/', asgi) # ?
+app.mount('/', asgi) # TODO: check it
