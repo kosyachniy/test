@@ -4,8 +4,6 @@ python:
   - "3.9"
 
 services: mongodb
-before_script:
-  - sudo /etc/init.d/mongod start
 
 install:
   - make setup-tests

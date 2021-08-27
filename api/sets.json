@@ -1,9 +1,9 @@
 {
     "mongo": {
         "host": "localhost:27017",
-        "db": "DBNAME",
-        "login": "admin",
-        "password": "PASSWORD"
+        "db": "uple",
+        "login": "",
+        "password": ""
     },
     "google": {
         "client_id": "",
