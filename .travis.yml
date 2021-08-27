@@ -24,7 +24,7 @@ install:
   - pip install -r api/requirements.txt
 
 script:
-  - python -m pylint api/app.py
+  - python -m pylint api/test.py
 
 # after_script:
 #   - docker-compose down
