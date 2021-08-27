@@ -1,4 +1,6 @@
 # Template full stack application
+[![Build Status](https://app.travis-ci.com/kosyachniy/test.svg?token=Y2sWDT2XzsY16XJ141Qp&branch=test1)](https://app.travis-ci.com/kosyachniy/test)
+
 ## Description
 Web-app on JS with Python JSON-RPC API
 
