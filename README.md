@@ -21,7 +21,7 @@ Android | Front-end | React Native | JavaScript | planned
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3" align="right">DevOps</td>
+            <td rowspan="3" align="center">DevOps</td>
             <td align="center"><img src="re/img/docker_logo.png" alt="Docker" height="70" /></td>
             <td><img src="re/img/docker_name.png" alt="Docker" height="70" /></td>
         </tr>
@@ -34,7 +34,7 @@ Android | Front-end | React Native | JavaScript | planned
             <td><img src="re/img/letsencrypt_name.png" alt="Let's Encrypt" height="70" /></td>
         </tr>
         <tr>
-            <td rowspan="3" align="right">Back-end</td>
+            <td rowspan="3" align="center">Back-end</td>
             <td align="center"><img src="re/img/fastapi_logo.png" alt="FastAPI" height="70" /></td>
             <td><img src="re/img/fastapi_name.png" alt="FastAPI" height="70" /></td>
         </tr>
@@ -47,7 +47,7 @@ Android | Front-end | React Native | JavaScript | planned
             <td><img src="re/img/socketio_name.png" alt="Socket.IO" height="70" /></td>
         </tr>
         <tr>
-            <td rowspan="4" align="right">Front-end</td>
+            <td rowspan="4" align="center">Front-end</td>
             <td align="center"><img src="re/img/reactjs_logo.png" alt="ReactJS" height="70" /></td>
             <td><img src="re/img/reactjs_name.png" alt="ReactJS" height="70" /></td>
         </tr>
