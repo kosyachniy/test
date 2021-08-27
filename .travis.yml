@@ -4,7 +4,7 @@ python:
   - "3.9"
 
 install:
-  - make setup-dev
+  - make setup-tests
 
 script:
   - make test-linter-all

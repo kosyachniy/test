@@ -3,14 +3,13 @@ PROJECT_NAME = web
 setup-dev:
 	cd api/ && \
 	python3 -m venv env && \
-	env/bin/pip install -r requirements.txt \
-	env/bin/pip install -r ../tests/requirements.txt
+	./env/bin/pip install -r requirements.txt
 
 setup-tests:
 	cd api/ && \
 	python3 -m venv env && \
-	env/bin/pip install -r requirements.txt && \
-	env/bin/pip install -r ../tests/requirements.txt
+	./env/bin/pip install -r requirements.txt && \
+	./env/bin/pip install -r ../tests/requirements.txt
 
 run:
 	cd docker/ && \
