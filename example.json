@@ -1,0 +1,1033 @@
+{
+    "available_room_categories": [
+        {
+            "show_order": 1,
+            "id": "55564",
+            "name": "Эконом",
+            "description": "Небольшой номер в итальянском стиле с двуспальной кроватью, оборудованный удобным санузлом, телевизором и Wi Fi.\n\nВ номере:\n- Двуспальная кровать\n- Чистое и свежее белье\n- Телевизор с плоским экраном, WiFi\n\nВ ванной комнате:\n- Душ, туалет\n- Полотенца, халат, тапочки, фен\n- Шампунь, крем, мыло, туалетная бумага\n\nУслуги и удобства: ​\n- На первом этаже\n- Ежедневная уборка\n- Звукоизоляция\n- Отопление\n- Вентиляция\n- Ковровое покрытие",
+            "adult_quantity": 2,
+            "children_quantity": 0,
+            "accommodation_type": "room",
+            "bed_quantity": 1,
+            "video_url": "https://www.youtube.com/watch?v=PiO6H07xELw",
+            "city": "",
+            "address": "",
+            "gis_point": null,
+            "postcode": null,
+            "geo_data": [
+                "(0,0)"
+            ],
+            "images": [
+                {
+                    "name": "BEL_8993.jpg",
+                    "filename": "27a9caf6fad97d3fb4924db52635b74b.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 6006143,
+                    "url": "https://reservationsteps.ru/files/27/a9/27a9caf6fad97d3fb4924db52635b74b_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/27/a9/27a9caf6fad97d3fb4924db52635b74b_1050x600.jpg",
+                    "show_order": 0
+                },
+                {
+                    "name": "286406642.jpg",
+                    "filename": "1d13a61d2aa490260ef8e5bcec331dd9.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 57137,
+                    "url": "https://reservationsteps.ru/files/1d/13/1d13a61d2aa490260ef8e5bcec331dd9_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/1d/13/1d13a61d2aa490260ef8e5bcec331dd9_1050x600.jpg",
+                    "show_order": 1
+                },
+                {
+                    "name": "BEL_8866.jpg",
+                    "filename": "7b261e2966910a55d7e99ab7c3f805fc.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 5387372,
+                    "url": "https://reservationsteps.ru/files/7b/26/7b261e2966910a55d7e99ab7c3f805fc_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/7b/26/7b261e2966910a55d7e99ab7c3f805fc_1050x600.jpg",
+                    "show_order": 2
+                },
+                {
+                    "name": "BEL_8887.jpg",
+                    "filename": "fc1478e93f4c399b6527ed6bd0451dee.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 5711573,
+                    "url": "https://reservationsteps.ru/files/fc/14/fc1478e93f4c399b6527ed6bd0451dee_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/fc/14/fc1478e93f4c399b6527ed6bd0451dee_1050x600.jpg",
+                    "show_order": 3
+                },
+                {
+                    "name": "BEL_8941.jpg",
+                    "filename": "7b67d65d73f52706db2ca9708b1b87e0.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 5030481,
+                    "url": "https://reservationsteps.ru/files/7b/67/7b67d65d73f52706db2ca9708b1b87e0_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/7b/67/7b67d65d73f52706db2ca9708b1b87e0_1050x600.jpg",
+                    "show_order": 4
+                }
+            ],
+            "amenity_groups": [
+                {
+                    "name": "Оснащение номера и мебель",
+                    "amenities": [
+                        {
+                            "name": "Площадь",
+                            "type": "int",
+                            "unit": "m2",
+                            "value": "9",
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/ploshad.svg",
+                            "icon_name": "ploshad"
+                        },
+                        {
+                            "name": "Утюг",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/utug.svg",
+                            "icon_name": "utug"
+                        },
+                        {
+                            "name": "Шкаф/Гардероб",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/shkaf_garderob.svg",
+                            "icon_name": "shkaf_garderob"
+                        },
+                        {
+                            "name": "Дополнительные подушки и одеяла",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/dopolnitelnye_podushki_i_odeyala.svg",
+                            "icon_name": "dopolnitelnye_podushki_i_odeyala"
+                        },
+                        {
+                            "name": "Светонепроницаемые шторы",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/svetonepronicaemye_shtory.svg",
+                            "icon_name": "svetonepronicaemye_shtory"
+                        }
+                    ]
+                },
+                {
+                    "name": "Ванная комната",
+                    "amenities": [
+                        {
+                            "name": "Собственный санузел",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/sobstvennyj_sanuzel.svg",
+                            "icon_name": "sobstvennyj_sanuzel"
+                        },
+                        {
+                            "name": "Халаты",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/halaty.svg",
+                            "icon_name": "halaty"
+                        },
+                        {
+                            "name": "Тапочки",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tapochki.svg",
+                            "icon_name": "tapochki"
+                        },
+                        {
+                            "name": "Туалетно-косметические принадлежности",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tualetno_kosmeticheskie_prinadlezhnosti.svg",
+                            "icon_name": "tualetno_kosmeticheskie_prinadlezhnosti"
+                        },
+                        {
+                            "name": "Душ",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/dush.svg",
+                            "icon_name": "dush"
+                        },
+                        {
+                            "name": "Фен",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/fen.svg",
+                            "icon_name": "fen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Кухня",
+                    "amenities": []
+                },
+                {
+                    "name": "Электроника и развлечения",
+                    "amenities": [
+                        {
+                            "name": "Телевизор",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/televizor.svg",
+                            "icon_name": "televizor"
+                        },
+                        {
+                            "name": "WiFi",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/wifi.svg",
+                            "icon_name": "wifi"
+                        }
+                    ]
+                },
+                {
+                    "name": "Вид",
+                    "amenities": [
+                        {
+                            "name": "Вид на город",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/gorod.svg",
+                            "icon_name": "gorod"
+                        },
+                        {
+                            "name": "Вид на внутренний двор",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/vnutrennij_dvor.svg",
+                            "icon_name": "vnutrennij_dvor"
+                        }
+                    ]
+                },
+                {
+                    "name": "Услуги",
+                    "amenities": [
+                        {
+                            "name": "Хранение багажа",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/hranenie_bagazha.svg",
+                            "icon_name": "hranenie_bagazha"
+                        }
+                    ]
+                }
+            ],
+            "tariffs": {
+                "20409": {
+                    "show_order": 1,
+                    "id": "20409",
+                    "name": "Стандартный Стойка/Сайт",
+                    "description": null,
+                    "price": 27200,
+                    "price_details": [
+                        {
+                            "date": "2024-07-29",
+                            "price": 4200
+                        },
+                        {
+                            "date": "2024-07-30",
+                            "price": 4800
+                        },
+                        {
+                            "date": "2024-07-31",
+                            "price": 4800
+                        },
+                        {
+                            "date": "2024-08-01",
+                            "price": 4600
+                        },
+                        {
+                            "date": "2024-08-02",
+                            "price": 4600
+                        },
+                        {
+                            "date": "2024-08-03",
+                            "price": 4200
+                        }
+                    ],
+                    "warranty_reservation_type": "absent",
+                    "nutrition": {
+                        "is_breakfast_enabled": false,
+                        "is_lunch_enabled": false,
+                        "is_evening_meal_enabled": false
+                    },
+                    "guarantee_params": null,
+                    "cancellation": null,
+                    "additional_services": []
+                }
+            }
+        },
+        {
+            "show_order": 2,
+            "id": "52157",
+            "name": "Стандарт",
+            "description": "Уютный номер в итальянском стиле с двуспальной кроватью, оборудованный удобным санузлом, телевизором и Wi Fi.\n\nВ номере:\n- Двуспальная кровать\n- Чистое и свежее белье\n- Телевизор с плоским экраном, WiFi\n\nВ ванной комнате:\n- Душ, туалет\n- Полотенца, халат, тапочки, фен\n- Шампунь, крем, мыло, туалетная бумага\n\nУслуги и удобства: ​\n- На первом этаже\n- Ежедневная уборка\n- Звукоизоляция\n- Отопление\n- Вентиляция\n- Ковровое покрытие",
+            "adult_quantity": 2,
+            "children_quantity": 0,
+            "accommodation_type": "room",
+            "bed_quantity": null,
+            "video_url": "https://www.youtube.com/watch?v=yB4Gb9lcPzQ",
+            "city": "",
+            "address": "",
+            "gis_point": null,
+            "postcode": null,
+            "geo_data": [
+                "(0,0)"
+            ],
+            "images": [
+                {
+                    "name": "BEL_8891.jpg",
+                    "filename": "3df228b2728f2ed9f00508dc10cf28da.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 5882977,
+                    "url": "https://reservationsteps.ru/files/3d/f2/3df228b2728f2ed9f00508dc10cf28da_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/3d/f2/3df228b2728f2ed9f00508dc10cf28da_1050x600.jpg",
+                    "show_order": 0
+                },
+                {
+                    "name": "BEL_8866.jpg",
+                    "filename": "b2491e646097b10bb37a7257de86321c.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 5387372,
+                    "url": "https://reservationsteps.ru/files/b2/49/b2491e646097b10bb37a7257de86321c_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/b2/49/b2491e646097b10bb37a7257de86321c_1050x600.jpg",
+                    "show_order": 2
+                },
+                {
+                    "name": "BEL_8941.jpg",
+                    "filename": "df58e1b66314104bee4bd91e0338f486.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 5030481,
+                    "url": "https://reservationsteps.ru/files/df/58/df58e1b66314104bee4bd91e0338f486_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/df/58/df58e1b66314104bee4bd91e0338f486_1050x600.jpg",
+                    "show_order": 3
+                },
+                {
+                    "name": "286408758.jpeg",
+                    "filename": "44432a4b6e1b469da4c2ca938ace8048.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 75844,
+                    "url": "https://reservationsteps.ru/files/44/43/44432a4b6e1b469da4c2ca938ace8048_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/44/43/44432a4b6e1b469da4c2ca938ace8048_1050x600.jpg",
+                    "show_order": 4
+                },
+                {
+                    "name": "286403299.jpeg",
+                    "filename": "37611ea2a85b060d26f173068205abd6.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 44115,
+                    "url": "https://reservationsteps.ru/files/37/61/37611ea2a85b060d26f173068205abd6_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/37/61/37611ea2a85b060d26f173068205abd6_1050x600.jpg",
+                    "show_order": 5
+                },
+                {
+                    "name": "286403695.jpeg",
+                    "filename": "44cdfa24de89cd7bbff95b2df9bf3be7.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 65185,
+                    "url": "https://reservationsteps.ru/files/44/cd/44cdfa24de89cd7bbff95b2df9bf3be7_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/44/cd/44cdfa24de89cd7bbff95b2df9bf3be7_1050x600.jpg",
+                    "show_order": 6
+                }
+            ],
+            "amenity_groups": [
+                {
+                    "name": "Оснащение номера и мебель",
+                    "amenities": [
+                        {
+                            "name": "Площадь",
+                            "type": "int",
+                            "unit": "m2",
+                            "value": "12",
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/ploshad.svg",
+                            "icon_name": "ploshad"
+                        },
+                        {
+                            "name": "Утюг",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/utug.svg",
+                            "icon_name": "utug"
+                        },
+                        {
+                            "name": "Шкаф/Гардероб",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/shkaf_garderob.svg",
+                            "icon_name": "shkaf_garderob"
+                        },
+                        {
+                            "name": "Дополнительные подушки и одеяла",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/dopolnitelnye_podushki_i_odeyala.svg",
+                            "icon_name": "dopolnitelnye_podushki_i_odeyala"
+                        },
+                        {
+                            "name": "Светонепроницаемые шторы",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/svetonepronicaemye_shtory.svg",
+                            "icon_name": "svetonepronicaemye_shtory"
+                        }
+                    ]
+                },
+                {
+                    "name": "Ванная комната",
+                    "amenities": [
+                        {
+                            "name": "Собственный санузел",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/sobstvennyj_sanuzel.svg",
+                            "icon_name": "sobstvennyj_sanuzel"
+                        },
+                        {
+                            "name": "Халаты",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/halaty.svg",
+                            "icon_name": "halaty"
+                        },
+                        {
+                            "name": "Тапочки",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tapochki.svg",
+                            "icon_name": "tapochki"
+                        },
+                        {
+                            "name": "Туалетно-косметические принадлежности",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tualetno_kosmeticheskie_prinadlezhnosti.svg",
+                            "icon_name": "tualetno_kosmeticheskie_prinadlezhnosti"
+                        },
+                        {
+                            "name": "Душ",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/dush.svg",
+                            "icon_name": "dush"
+                        },
+                        {
+                            "name": "Фен",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/fen.svg",
+                            "icon_name": "fen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Кухня",
+                    "amenities": []
+                },
+                {
+                    "name": "Электроника и развлечения",
+                    "amenities": [
+                        {
+                            "name": "Телевизор",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/televizor.svg",
+                            "icon_name": "televizor"
+                        },
+                        {
+                            "name": "WiFi",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/wifi.svg",
+                            "icon_name": "wifi"
+                        }
+                    ]
+                },
+                {
+                    "name": "Вид",
+                    "amenities": [
+                        {
+                            "name": "Вид на город",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/gorod.svg",
+                            "icon_name": "gorod"
+                        },
+                        {
+                            "name": "Вид на внутренний двор",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/vnutrennij_dvor.svg",
+                            "icon_name": "vnutrennij_dvor"
+                        }
+                    ]
+                },
+                {
+                    "name": "Услуги",
+                    "amenities": [
+                        {
+                            "name": "Хранение багажа",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/hranenie_bagazha.svg",
+                            "icon_name": "hranenie_bagazha"
+                        }
+                    ]
+                }
+            ],
+            "tariffs": {
+                "20409": {
+                    "show_order": 1,
+                    "id": "20409",
+                    "name": "Стандартный Стойка/Сайт",
+                    "description": null,
+                    "price": 28400,
+                    "price_details": [
+                        {
+                            "date": "2024-07-29",
+                            "price": 4400
+                        },
+                        {
+                            "date": "2024-07-30",
+                            "price": 5000
+                        },
+                        {
+                            "date": "2024-07-31",
+                            "price": 5000
+                        },
+                        {
+                            "date": "2024-08-01",
+                            "price": 4800
+                        },
+                        {
+                            "date": "2024-08-02",
+                            "price": 4800
+                        },
+                        {
+                            "date": "2024-08-03",
+                            "price": 4400
+                        }
+                    ],
+                    "warranty_reservation_type": "absent",
+                    "nutrition": {
+                        "is_breakfast_enabled": false,
+                        "is_lunch_enabled": false,
+                        "is_evening_meal_enabled": false
+                    },
+                    "guarantee_params": null,
+                    "cancellation": null,
+                    "additional_services": []
+                }
+            }
+        },
+        {
+            "show_order": 3,
+            "id": "387807",
+            "name": "Комфорт без вида из окна",
+            "description": "Большой номер в итальянском стиле в отеле Капучино, где по запросу можно поставить дополнительную кровать. Здесь есть рабочее место, просторная ванная и большая кровать. \n\nВид из окна отсутствует.\n\nВ номере:\n- Двуспальная кровать\n- Чистое и свежее белье\n- Кресло\n- Журнальный столик\n- Телевизор с плоским экраном, WiFi\n\nВ ванной комнате:\n- Душ, туалет\n- Полотенца, халат, тапочки, фен\n- Шампунь, крем, мыло, туалетная бумага\n\nУслуги и удобства: ​\n- На первом этаже\n- Ежедневная уборка\n- Звукоизоляция\n- Отопление\n- Вентиляция\n- Ковровое покрытие",
+            "adult_quantity": 2,
+            "children_quantity": 0,
+            "accommodation_type": "room",
+            "bed_quantity": null,
+            "video_url": "https://www.youtube.com/watch?v=ENZbC1MSX2E",
+            "city": "",
+            "address": "",
+            "gis_point": null,
+            "postcode": null,
+            "geo_data": [
+                "(0,0)"
+            ],
+            "images": [
+                {
+                    "name": "2.jpg",
+                    "filename": "88c430ff924a8a449274178f31119d1e.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 46697,
+                    "url": "https://reservationsteps.ru/files/88/c4/88c430ff924a8a449274178f31119d1e_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/88/c4/88c430ff924a8a449274178f31119d1e_1050x600.jpg",
+                    "show_order": 0
+                },
+                {
+                    "name": "4.jpg",
+                    "filename": "cc96dc05bb8787250375a5bc99d5187f.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 56964,
+                    "url": "https://reservationsteps.ru/files/cc/96/cc96dc05bb8787250375a5bc99d5187f_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/cc/96/cc96dc05bb8787250375a5bc99d5187f_1050x600.jpg",
+                    "show_order": 1
+                },
+                {
+                    "name": "1.JPG",
+                    "filename": "c3069a239a6bb3b58364efb703c39f03.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 42647,
+                    "url": "https://reservationsteps.ru/files/c3/06/c3069a239a6bb3b58364efb703c39f03_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/c3/06/c3069a239a6bb3b58364efb703c39f03_1050x600.jpg",
+                    "show_order": 2
+                },
+                {
+                    "name": "3.JPG",
+                    "filename": "6b469a550a34984ff052f0dced73e5d6.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 42289,
+                    "url": "https://reservationsteps.ru/files/6b/46/6b469a550a34984ff052f0dced73e5d6_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/6b/46/6b469a550a34984ff052f0dced73e5d6_1050x600.jpg",
+                    "show_order": 3
+                }
+            ],
+            "amenity_groups": [
+                {
+                    "name": "Оснащение номера и мебель",
+                    "amenities": [
+                        {
+                            "name": "Площадь",
+                            "type": "int",
+                            "unit": "m2",
+                            "value": "16",
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/ploshad.svg",
+                            "icon_name": "ploshad"
+                        },
+                        {
+                            "name": "Утюг",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/utug.svg",
+                            "icon_name": "utug"
+                        },
+                        {
+                            "name": "Шкаф/Гардероб",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/shkaf_garderob.svg",
+                            "icon_name": "shkaf_garderob"
+                        },
+                        {
+                            "name": "Дополнительные подушки и одеяла",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/dopolnitelnye_podushki_i_odeyala.svg",
+                            "icon_name": "dopolnitelnye_podushki_i_odeyala"
+                        },
+                        {
+                            "name": "Светонепроницаемые шторы",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/svetonepronicaemye_shtory.svg",
+                            "icon_name": "svetonepronicaemye_shtory"
+                        }
+                    ]
+                },
+                {
+                    "name": "Ванная комната",
+                    "amenities": [
+                        {
+                            "name": "Собственный санузел",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/sobstvennyj_sanuzel.svg",
+                            "icon_name": "sobstvennyj_sanuzel"
+                        },
+                        {
+                            "name": "Халаты",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/halaty.svg",
+                            "icon_name": "halaty"
+                        },
+                        {
+                            "name": "Тапочки",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tapochki.svg",
+                            "icon_name": "tapochki"
+                        },
+                        {
+                            "name": "Туалетно-косметические принадлежности",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tualetno_kosmeticheskie_prinadlezhnosti.svg",
+                            "icon_name": "tualetno_kosmeticheskie_prinadlezhnosti"
+                        },
+                        {
+                            "name": "Фен",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/fen.svg",
+                            "icon_name": "fen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Кухня",
+                    "amenities": []
+                },
+                {
+                    "name": "Электроника и развлечения",
+                    "amenities": [
+                        {
+                            "name": "Телевизор",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/televizor.svg",
+                            "icon_name": "televizor"
+                        },
+                        {
+                            "name": "WiFi",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/wifi.svg",
+                            "icon_name": "wifi"
+                        }
+                    ]
+                },
+                {
+                    "name": "Вид",
+                    "amenities": []
+                },
+                {
+                    "name": "Услуги",
+                    "amenities": [
+                        {
+                            "name": "Хранение багажа",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/hranenie_bagazha.svg",
+                            "icon_name": "hranenie_bagazha"
+                        }
+                    ]
+                }
+            ],
+            "tariffs": {
+                "20409": {
+                    "show_order": 1,
+                    "id": "20409",
+                    "name": "Стандартный Стойка/Сайт",
+                    "description": null,
+                    "price": 31400,
+                    "price_details": [
+                        {
+                            "date": "2024-07-29",
+                            "price": 4900
+                        },
+                        {
+                            "date": "2024-07-30",
+                            "price": 5500
+                        },
+                        {
+                            "date": "2024-07-31",
+                            "price": 5500
+                        },
+                        {
+                            "date": "2024-08-01",
+                            "price": 5300
+                        },
+                        {
+                            "date": "2024-08-02",
+                            "price": 5300
+                        },
+                        {
+                            "date": "2024-08-03",
+                            "price": 4900
+                        }
+                    ],
+                    "warranty_reservation_type": "absent",
+                    "nutrition": {
+                        "is_breakfast_enabled": false,
+                        "is_lunch_enabled": false,
+                        "is_evening_meal_enabled": false
+                    },
+                    "guarantee_params": null,
+                    "cancellation": null,
+                    "additional_services": []
+                }
+            }
+        },
+        {
+            "show_order": 4,
+            "id": "52158",
+            "name": "Комфорт",
+            "description": "Большой номер в итальянском стиле в отеле Капучино, где по запросу можно поставить дополнительную кровать. Здесь есть рабочее место, просторная ванная и большая кровать, а так же вид на тихий московский переулок.\n\nВ номере:\n- Двуспальная кровать\n- Чистое и свежее белье\n- Кресло\n- Журнальный столик\n- Телевизор с плоским экраном, WiFi\n\nВ ванной комнате:\n- Душ, туалет\n- Полотенца, халат, тапочки, фен\n- Шампунь, крем, мыло, туалетная бумага\n\nУслуги и удобства: ​\n- На первом этаже\n- Ежедневная уборка\n- Звукоизоляция\n- Отопление\n- Вентиляция\n- Ковровое покрытие",
+            "adult_quantity": 2,
+            "children_quantity": 0,
+            "accommodation_type": "room",
+            "bed_quantity": null,
+            "video_url": "https://www.youtube.com/watch?v=FWeTxKTUIgE",
+            "city": "",
+            "address": "",
+            "gis_point": null,
+            "postcode": null,
+            "geo_data": [
+                "(0,0)"
+            ],
+            "images": [
+                {
+                    "name": "286404023.jpg",
+                    "filename": "86c9f8e557b6bdf266364707e02ff6be.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 69906,
+                    "url": "https://reservationsteps.ru/files/86/c9/86c9f8e557b6bdf266364707e02ff6be_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/86/c9/86c9f8e557b6bdf266364707e02ff6be_1050x600.jpg",
+                    "show_order": 0
+                },
+                {
+                    "name": "BEL_8864.jpg",
+                    "filename": "a4e362729dd3871cccbb9ec927acab07.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 6291200,
+                    "url": "https://reservationsteps.ru/files/a4/e3/a4e362729dd3871cccbb9ec927acab07_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/a4/e3/a4e362729dd3871cccbb9ec927acab07_1050x600.jpg",
+                    "show_order": 1
+                },
+                {
+                    "name": "BEL_8866.jpg",
+                    "filename": "308ab6ee233cc7b19877f9e5c6ef4833.jpg",
+                    "mime_type": "image/jpeg",
+                    "size": 5387372,
+                    "url": "https://reservationsteps.ru/files/30/8a/308ab6ee233cc7b19877f9e5c6ef4833_1050x600.jpg",
+                    "thumb": "https://reservationsteps.ru/files/30/8a/308ab6ee233cc7b19877f9e5c6ef4833_1050x600.jpg",
+                    "show_order": 2
+                }
+            ],
+            "amenity_groups": [
+                {
+                    "name": "Оснащение номера и мебель",
+                    "amenities": [
+                        {
+                            "name": "Площадь",
+                            "type": "int",
+                            "unit": "m2",
+                            "value": "16",
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/ploshad.svg",
+                            "icon_name": "ploshad"
+                        },
+                        {
+                            "name": "Утюг",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/utug.svg",
+                            "icon_name": "utug"
+                        },
+                        {
+                            "name": "Шкаф/Гардероб",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/shkaf_garderob.svg",
+                            "icon_name": "shkaf_garderob"
+                        },
+                        {
+                            "name": "Дополнительные подушки и одеяла",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/dopolnitelnye_podushki_i_odeyala.svg",
+                            "icon_name": "dopolnitelnye_podushki_i_odeyala"
+                        },
+                        {
+                            "name": "Светонепроницаемые шторы",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/svetonepronicaemye_shtory.svg",
+                            "icon_name": "svetonepronicaemye_shtory"
+                        }
+                    ]
+                },
+                {
+                    "name": "Ванная комната",
+                    "amenities": [
+                        {
+                            "name": "Собственный санузел",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/sobstvennyj_sanuzel.svg",
+                            "icon_name": "sobstvennyj_sanuzel"
+                        },
+                        {
+                            "name": "Халаты",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/halaty.svg",
+                            "icon_name": "halaty"
+                        },
+                        {
+                            "name": "Тапочки",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tapochki.svg",
+                            "icon_name": "tapochki"
+                        },
+                        {
+                            "name": "Туалетно-косметические принадлежности",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/tualetno_kosmeticheskie_prinadlezhnosti.svg",
+                            "icon_name": "tualetno_kosmeticheskie_prinadlezhnosti"
+                        },
+                        {
+                            "name": "Душ",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/dush.svg",
+                            "icon_name": "dush"
+                        },
+                        {
+                            "name": "Фен",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/fen.svg",
+                            "icon_name": "fen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Кухня",
+                    "amenities": []
+                },
+                {
+                    "name": "Электроника и развлечения",
+                    "amenities": [
+                        {
+                            "name": "Телевизор",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/televizor.svg",
+                            "icon_name": "televizor"
+                        },
+                        {
+                            "name": "WiFi",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/wifi.svg",
+                            "icon_name": "wifi"
+                        }
+                    ]
+                },
+                {
+                    "name": "Вид",
+                    "amenities": [
+                        {
+                            "name": "Вид на город",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/gorod.svg",
+                            "icon_name": "gorod"
+                        },
+                        {
+                            "name": "Вид на внутренний двор",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/vnutrennij_dvor.svg",
+                            "icon_name": "vnutrennij_dvor"
+                        }
+                    ]
+                },
+                {
+                    "name": "Услуги",
+                    "amenities": [
+                        {
+                            "name": "Хранение багажа",
+                            "type": "bool",
+                            "unit": null,
+                            "value": true,
+                            "icon_url": "https://reservationsteps.ru/new_ui/img/amenities/hranenie_bagazha.svg",
+                            "icon_name": "hranenie_bagazha"
+                        }
+                    ]
+                }
+            ],
+            "tariffs": {
+                "20409": {
+                    "show_order": 1,
+                    "id": "20409",
+                    "name": "Стандартный Стойка/Сайт",
+                    "description": null,
+                    "price": 33800,
+                    "price_details": [
+                        {
+                            "date": "2024-07-29",
+                            "price": 5300
+                        },
+                        {
+                            "date": "2024-07-30",
+                            "price": 5900
+                        },
+                        {
+                            "date": "2024-07-31",
+                            "price": 5900
+                        },
+                        {
+                            "date": "2024-08-01",
+                            "price": 5700
+                        },
+                        {
+                            "date": "2024-08-02",
+                            "price": 5700
+                        },
+                        {
+                            "date": "2024-08-03",
+                            "price": 5300
+                        }
+                    ],
+                    "warranty_reservation_type": "absent",
+                    "nutrition": {
+                        "is_breakfast_enabled": false,
+                        "is_lunch_enabled": false,
+                        "is_evening_meal_enabled": false
+                    },
+                    "guarantee_params": null,
+                    "cancellation": null,
+                    "additional_services": []
+                }
+            }
+        }
+    ]
+}
